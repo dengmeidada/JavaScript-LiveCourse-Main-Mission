@@ -42,4 +42,14 @@ box-shadow: 0 0 0 0.2rem rgba(255, 118, 38, 0.5);
 
 .figure-img{
     padding: 10px;
+    margin:50px;
 }
+
+.footer {
+    margin-top: 50px;
+    /* background: #212121; */
+    text-align: center;
+    padding: 5px;
+    /* color: #fff; */
+    color: #212121;
+  }
