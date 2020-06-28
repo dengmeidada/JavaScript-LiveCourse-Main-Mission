@@ -1,0 +1,45 @@
+.card{
+    cursor: pointer; 
+}
+.completed {
+    text-decoration: line-through;
+    color: #bababa;
+    font-size: .8em;
+}
+
+.priceItem{
+    color: #ff6700;
+    font-size: 1.2em;
+    line-height: 1.2;
+}
+
+.btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
+    color: #fff;
+    background-color: #ff6700;
+    border-color: #ff6700;
+}
+
+.btn-primary:not(:disabled):not(.disabled).active:focus, .btn-primary:not(:disabled):not(.disabled):active:focus, .show>.btn-primary.dropdown-toggle:focus {
+box-shadow: 0 0 0 0.2rem rgba(255, 118, 38, 0.5);
+}
+
+.btn-primary{
+    background-color: #ff6700;
+    border-color:#ff6700;
+}
+
+.btn-primary.focus, .btn-primary:focus {
+    background-color: #f95b07;
+    border-color: #f95b07;
+    box-shadow: 0 0 0 0.2rem rgba(223, 105, 50, 0.966);
+}
+
+.btn-primary:hover {
+    color: #fff;
+    background-color: #f95b07;
+    border-color: #f95b07;
+}
+
+.figure-img{
+    padding: 10px;
+}
