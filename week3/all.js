@@ -30,6 +30,27 @@ new Vue({
         tempProduct: {}
     },
     methods: {
+         // 建立 / 修改產品
+         updateProduct(){
+            if(this.tempProduct.id){   //修改產品
+                const id = this.tempProduct.id;
+                this.products.forEach((item,i) => {
+                    // console.log(item,i); //印出目前有的產品
+                    if(item.id === id){  //當為此產品id時 (為了修改對應產品)
+                        this.products[i] = this.tempProduct; //更新修改改資料
+                    }
+                //  console.log(this.tempProduct.id);   
+                });
+            }else{ //建立新產品
+                // console.log("else:"+this.tempProduct.id); 
+                const id = new Date().getTime(); //讓產品id的值，為唯一
+                this.tempProduct.id = id;
+                this.products.push(this.tempProduct); //建立新產品塞進this.tempProduct物件中
+            }
+            tempProduct = {};
+            // console.log(tempProduct);
+            $('#productModal').modal('hide');
+        },
         
         //打開浮出視窗
         openModal(isNew,product){  //從@clike傳值       
@@ -54,27 +75,7 @@ new Vue({
             }
 
         },
-        // 建立 / 修改產品
-        updateProduct(){
-            if(this.tempProduct.id){   //修改產品
-                const id = this.tempProduct.id;
-                this.products.forEach((item,i) => {
-                    // console.log(item,i); //印出目前有的產品
-                    if(item.id === id){  //當為此產品id時 (為了修改對應產品)
-                        this.products[i] = this.tempProduct; //更新修改改資料
-                    }
-                //  console.log(this.tempProduct.id);   
-                });
-            }else{ //建立新產品
-                // console.log("else:"+this.tempProduct.id); 
-                const id = new Date().getTime(); //讓產品id的值，為唯一
-                this.tempProduct.id = id;
-                this.products.push(this.tempProduct); //建立新產品塞進this.tempProduct物件中
-            }
-            tempProduct = {};
-            console.log(tempProduct);
-            $('#productModal').modal('hide');
-        },
+       
         //刪除商品
         delProduct(){
             if(this.tempProduct.id){ 
@@ -84,7 +85,7 @@ new Vue({
                         this.products.splice(i,1);
                         this.tempProduct = {};
                     }
-                 console.log(this.tempProduct.id);   
+                //  console.log(this.tempProduct.id);   
                 });
             }
             $('#delProductModal').modal('hide');
