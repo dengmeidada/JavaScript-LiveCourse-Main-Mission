@@ -41,12 +41,14 @@ new Vue({
                     break;
                 case 'edit':
                     $('#productModal').modal('show');
-                    this.tempProduct = Object.assign({},product);
+                    // this.tempProduct = Object.assign({},product);
+                    this.tempProduct = JSON.parse(JSON.stringify(product));
                     console.log(isNew,product)
                     break;
                 case 'delete':
                     $('#delProductModal').modal('show');
-                    this.tempProduct = Object.assign({},product);
+                    // this.tempProduct = Object.assign({},product);
+                    this.tempProduct = JSON.parse(JSON.stringify(product));
                     console.log(isNew,product)
                     break;
                 default:
