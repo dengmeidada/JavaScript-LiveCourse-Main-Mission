@@ -37,50 +37,50 @@ new Vue({
                 case 'new':
                     this.tempProduct = {}
                     $('#productModal').modal('show');
-                    console.log(isNew,product)
+                    // console.log(isNew,product);
                     break;
                 case 'edit':
                     $('#productModal').modal('show');
-                    // this.tempProduct = Object.assign({},product);
-                    this.tempProduct = JSON.parse(JSON.stringify(product));
-                    console.log(isNew,product)
+                    this.tempProduct = Object.assign({},product); //淺層複製
+                    // console.log(isNew,product);
                     break;
                 case 'delete':
                     $('#delProductModal').modal('show');
-                    // this.tempProduct = Object.assign({},product);
-                    this.tempProduct = JSON.parse(JSON.stringify(product));
-                    console.log(isNew,product)
+                    this.tempProduct = Object.assign({},product);
+                    // console.log(isNew,product);
                     break;
                 default:
                     break;        
             }
 
         },
-        //建立新產品
+        // 建立 / 修改產品
         updateProduct(){
-            if(this.tempProduct.id){
+            if(this.tempProduct.id){   //修改產品
                 const id = this.tempProduct.id;
                 this.products.forEach((item,i) => {
-                    if(product.id === id){
-                        this.products[i] = this.tempProduct;
+                    // console.log(item,i); //印出目前有的產品
+                    if(item.id === id){  //當為此產品id時 (為了修改對應產品)
+                        this.products[i] = this.tempProduct; //更新修改改資料
                     }
-                 console.log(this.tempProduct.id);   
+                //  console.log(this.tempProduct.id);   
                 });
-            }else{
-                console.log("else:"+this.tempProduct.id); 
-                const id = new Date().getTime();
+            }else{ //建立新產品
+                // console.log("else:"+this.tempProduct.id); 
+                const id = new Date().getTime(); //讓產品id的值，為唯一
                 this.tempProduct.id = id;
-                this.products.push(this.tempProduct);
+                this.products.push(this.tempProduct); //建立新產品塞進this.tempProduct物件中
             }
             tempProduct = {};
+            console.log(tempProduct);
             $('#productModal').modal('hide');
         },
         //刪除商品
         delProduct(){
-            if(this.tempProduct.id){
+            if(this.tempProduct.id){ 
                 const id = this.tempProduct.id;
                 this.products.forEach((item,i) => {
-                    if(item.id === id){
+                    if(item.id === id){ //當為此產品id時 (為了刪除對應產品)
                         this.products.splice(i,1);
                         this.tempProduct = {};
                     }
