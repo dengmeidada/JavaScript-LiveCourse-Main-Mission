@@ -11,23 +11,26 @@
 <body>
     <div id="app">
         <div class="container">
-            <form class="form-signIn" @submit.prevent="singIn">
+            <form class="form-signin" @submit.prevent="signin">
                 <h1 class="h3 mb-3 font-weight-normal">
                     請先登入
                 </h1>
                 <div class="form-group">
-                    <label for="inputEmail" class="sr-only">Email address</label>
-                    <input id="inputEmail" v-model="user.email" type="email" class="form-control" placeholder="Email address"
+                  <label for="inputEmail" class="sr-only">Email address</label>
+                  <input id="inputEmail" v-model="user.email" type="email" class="form-control" placeholder="請輸入email"
                       required autofocus>
-                  </div>
+                </div>
                 <div class="form-group">
-                    <label for="inputPassword" class="sr-only">Password</label>
-                    <input id="inputPassword" v-model="user.password" type="password" class="form-control"
-                      placeholder="Password" required>
-                  </div>
+                  <label for="inputPassword" class="sr-only">密碼</label>
+                  <input id="inputPassword" v-model="user.password" type="password" class="form-control"
+                      placeholder="請輸入密碼" required>
+                </div>
                 <button class="btn btn-lg btn-primary btn-block" type="submit">
-                    登入
+                  登入
                 </button>
+                <button class="btn btn-outline-primary btn-block" type="button" >
+                  登出
+              </button>
             </form>
         </div>
     </div>
@@ -44,6 +47,6 @@
       </script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script src="./all.js"></script>
+    <script src="./js/all.js"></script>
 </body>
 </html>
