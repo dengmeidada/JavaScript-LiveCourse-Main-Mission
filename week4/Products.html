@@ -21,6 +21,7 @@
             <thead>
                 <tr>
                     <th  width="120">分類</th>
+                    <th  width="120">圖片</th>
                     <th  width="120">產品名稱</th>
                     <th  width="120">原價</th>
                     <th  width="120">售價</th>
@@ -31,11 +32,14 @@
             <tbody>
                 <tr v-for="(product,key) in products" :key="product.id">
                     <td>{{ product.category }}</td>
+                    <td style="max-width: 120px;">
+                      <img style="width:100%;" :src="product.imageUrl[0]" alt="">
+                    </td>
                     <td>{{ product.title }}</td>
-                    <td class="text-right">{{ product.originPrice }}</td>
+                    <td class="text-right">{{ product.origin_price }}</td>
                     <td class="text-right">{{ product.price }}</td>
                     <td>
-                        <span v-if="product.isEnabled" class="text-success">啟用</span>
+                        <span v-if="product.enabled" class="text-success">啟用</span>
                         <span v-else>未啟用</span>
                     </td>
                     <td>
@@ -51,10 +55,14 @@
                 </tr>
             </tbody>
         </table>
-        <!-- 分頁元件 -->
+        <!-- 分頁元件 顯現-->
         <pagination :pages="pagination" @emit-pages="getProducts"></pagination>
         <!-- 建立新的產品 / 修改商品 Modal 顯現 -->
         <product-modal ref="productModal" :status="status " :is-new="isNew" :user="user" @update="getProducts"></product-modal>
+        <!-- 刪除商品 Modal -->
+        <del-product-modal :temp-product="tempProduct" :user="user" @update="getProducts"></del-product-modal>
+      </div>
+
 
         <!-- 分頁元件建立 -->
         <script type="text/x-template" id="pagination">
@@ -88,7 +96,8 @@
             <div class="modal-content border-0">
                 <div class="modal-header bg-dark text-white">
                     <h5 id="exampleModalLabel" class="modal-title">
-                        <span>新增產品</span>
+                        <span v-if="isNew">新增產品</span>
+                        <span v-else="isNew">編輯產品</span>
                     </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -97,11 +106,21 @@
                 <div class="modal-body">
                   <div class="row">
                     <div class="col-sm-4">
-                      <div class="form-group">
-                        <label for="imageUrl">輸入圖片網址</label>
-                        <input id="imageUrl" class="form-control" type="text" v-model="tempProduct.imageUrl" placeholder="請輸入圖片連結">
+                      <div v-for="i in 2" :key="i + 'img'" class="form-group">
+                        <label :for="'img' + i">輸入圖片網址</label>
+                        <input :id="'img' + i" v-model="tempProduct.imageUrl[i - 1]" type="text" class="form-control"
+                          placeholder="請輸入圖片連結">
                       </div>
-                      <img class="img-fluid" :src="tempProduct.imageUrl">
+                      <div class="form-group">
+                        <div class="custom-file">
+                          <label class="custom-file-label" for="customFile" data-browse="Bestand kiezen">
+                            上傳圖片 不可超過 2 MB
+                            <i v-if="status.fileUploading" class="fas fa-spinner fa-spin"></i>
+                          </label>
+                          <input  class="custom-file-input form-control" id="customFile" ref="file" type="file" @change="uploadFile" >
+                        </div>
+                        <img class="img-fluid" :src="tempProduct.imageUrl[0]" alt />
+                      </div> 
                     </div>
                     <div class="col-sm-8">
                       <div class="form-group">
@@ -120,8 +139,8 @@
                       </div>
                       <div class="form-row">
                         <div class="form-group col-md-6">
-                          <label for="originPrice">原價</label>
-                          <input id="originPrice" class="form-control" type="text" v-model="tempProduct.originPrice" placeholder="請輸入原價">
+                          <label for="origin_price">原價</label>
+                          <input id="origin_price" class="form-control" type="text" v-model="tempProduct.origin_price" placeholder="請輸入原價">
                         </div>
                         <div class="form-group col-md-6">
                           <label for="price">售價</label>
@@ -140,8 +159,8 @@
                       </div>
                       <div class="form-group">
                         <div class="form-check">
-                          <input id="isEnabled" type="checkbox" v-model="tempProduct.isEnabled"  :true-value="1" :false-value="0">
-                          <label class="form-check-label" for="isEnabled">是否啟用</label>
+                          <input id="enabled" type="checkbox" v-model="tempProduct.enabled"  :true-value="1" :false-value="0">
+                          <label class="form-check-label" for="enabled">是否啟用</label>
                         </div>
                       </div>
                     </div>
@@ -183,8 +202,8 @@
           </div>
         </script>
         
-      </div>
-    </div>
+      
+  
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
     integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
     </script>

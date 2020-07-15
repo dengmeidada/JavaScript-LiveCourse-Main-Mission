@@ -2,17 +2,15 @@
 Vue.component('pagination',{
     template:'#pagination',
     props:{
-        pages: {
-            type: Object,
-            default() {
-              return {
-              };
-            },
-          },
+        pages: {}
+    },
+    data() {
+        return {
+        }
     },
     methods:{
-        emitPages(product){
-            this.$emit('emit-pages',product);
+        emitPages(item){
+            this.$emit('emit-pages',item);
         }
     }
 })
@@ -32,35 +30,95 @@ Vue.component('productModal',{
                 imageUrl:[]
             }
         }
-    },
-    
+    },  
     methods:{
         //取得產品
-        getProduct(id){
-            const api = `https://course-ec-api.hexschool.io/api/${this.user.uuid}/admin/ec/products/${id}`
-            axios.get(api)
-            .then((res) => {
+        getProduct(id){ 
+            console.log("getProduct(id)");
+            const api = `https://course-ec-api.hexschool.io/api/${this.user.uuid}/admin/ec/product/${id}`
+            axios.get(api).then((res) => {
                 $('#productModal').modal('show');
-                console.log(res);
+                this.tempProduct = res.data.data;
+               
             }).catch((error)=>{
                 console.log(error);
             })
         },
-        //上傳產品
+        //上傳產品(新增 及 編輯)
         updateProduct(){
+            console.log(this.tempProduct);
             // 新增商品
             let api =`https://course-ec-api.hexschool.io/api/${this.user.uuid}/admin/ec/product`
             let httpMethod = 'post';
 
             if(!this.isNew){ //編輯商品
-                api=`https://course-ec-api.hexschool.io/api/${this.user.uuid}/ec/products/${this.tempProduct.id}`
+                api = `https://course-ec-api.hexschool.io/api/${this.user.uuid}/admin/ec/product/${this.tempProduct.id}`
                 httpMethod = 'patch';
             }
 
-            axios[httpMethod](api,this.tempProduct)
-            .then((res)=>{
+            axios.defaults.headers.common.Authorization = `Bearer ${this.user.token}`;
+
+            axios[httpMethod](api,this.tempProduct).then((res)=>{
                 $('#productModal').modal('hide');
-                console.log(res);
+                this.$emit('update');
+                console.log("updateProduct()");
+            }).catch((error)=>{
+                console.log(error);
+            })
+        },
+        //上傳檔案
+        uploadFile(){
+            const uploadFile = this.$refs.file.files[0];
+            console.log(this.$refs.file.files[0]);
+            const formData = new FormData();  // 一開始表單的資料是空的
+            formData.append('file',uploadFile);
+            const url = `https://course-ec-api.hexschool.io/api/${this.user.uuid}/admin/storage`
+            this.fileUploading = true;
+            axios.post(url,formData,{
+                headers:{
+                    'Content':'multipart/form-data'
+                }
+            }).then((res)=>{
+                this.fileUploading = false;
+                if(res.status === 200){
+                    this.tempProduct.imageUrl.push(res.data.data.path);
+                }
+            }).catch((error)=>{
+                console.log('上傳不可超過 2 MB');
+                this.status.fileUploading = false;
+            })
+        },
+        clearProductData(){
+            this.tempProduct = {
+                imageUrl: [],
+            };
+        }
+        
+    }
+})
+
+// 註冊刪除商品元件
+Vue.component('delProductModal',{
+    template:'#delProductModal',
+    props:{
+        tempProduct:{
+            imageUrl:[]
+        },
+        user:{}
+    },
+    data() {
+        return {
+        };
+      },
+    methods:{
+        delProduct(){
+            const api = `https://course-ec-api.hexschool.io/api/${this.user.uuid}/admin/ec/product/${this.tempProduct.id}`;
+            
+            axios.defaults.headers.common.Authorization = `Bearer ${this.user.token}`;
+
+            axios.delete(api).then((res)=>{
+                $('#delProductModal').modal('hide');
+                this.$emit('update');
             }).catch((error)=>{
                 console.log(error);
             })
@@ -74,12 +132,13 @@ new Vue({
     data(){
         return{
             products:[],
+            pagination:{},
             tempProduct:{
                 imageUrl:[]
             },
             isNew:false,
             status:{
-                fileUploading: false //上傳檔案
+                fileUploading: false
             },
             user:{
                 token:'',
@@ -89,8 +148,12 @@ new Vue({
     },
     created(){
         // 取得token 的 cookie
-        this.user.token = document.cookie.replace(/(?:(?:^|.*;\s*)test2\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-        
+        this.user.token = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+
+        // 若無法取得 token 則返回 Login 頁面 (當token空值時)
+        if (this.user.token === '') {
+            window.location = 'Login.html';
+        }
         this.getProducts();
     },
     methods: {
@@ -98,11 +161,15 @@ new Vue({
         getProducts(page = 1){
             const api = `https://course-ec-api.hexschool.io/api/${this.user.uuid}/admin/ec/products?page=${page}`
             
+            // 預設token
             axios.defaults.headers.common.Authorization = `Bearer ${this.user.token}`;
             
-            axios.get(api)
-            .then((res)=>{
-                console.log(res.data.data);
+            axios.get(api).then((res)=>{
+                this.products = res.data.data;
+                this.pagination = res.data.meta.pagination;
+                // console.log(res.data);
+            }).catch((error)=>{
+                console.log(error);
             })
         },
         // 開啟 浮出視窗
@@ -110,19 +177,22 @@ new Vue({
             switch(isNew){
                 case 'new':
                     this.tempProduct = {
-                        imageUrl:[]
+                        imageUrl: [],
                     };
+                    // 使用 refs 觸發子元件方法
+                    this.$refs.productModal.clearProductData(); //清空productModal元件資料
                     this.isNew = true;
                     $('#productModal').modal('show');
                     break
                 case 'edit':
-                    this.tempProduct = Object.assign({}, product);
+                    this.tempProduct = Object.assign({}, product); //淺層複製
+                    // 使用 refs 觸發子元件方法
+                    this.$refs.productModal.getProduct(this.tempProduct.id); //把此商品id傳進getProduct function->抓取對應商品資訊
                     this.isNew = false;
-                    $('#productModal').modal('show');
-                    break
+                    break;
                 case 'delete':
                     this.tempProduct = Object.assign({}, product);
-                    $('#productModal').modal('show');
+                    $('#delProductModal').modal('show');
                     break
                 default:
                     break;

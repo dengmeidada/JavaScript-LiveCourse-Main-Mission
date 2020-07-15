@@ -56,3 +56,8 @@ box-shadow: 0 0 0 0.2rem rgba(255, 118, 38, 0.5);
     /* color: #fff; */
     color: #212121;
   }
+
+/* 分頁 */
+.pagination{
+    justify-content:center;
+}
