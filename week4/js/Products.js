@@ -126,6 +126,18 @@ Vue.component('delProductModal',{
     }
 })
 
+// 註冊Sidebar 元件
+Vue.component('sidebarItem',{
+    template:'#sidebarItem',
+    props:{
+        isSidebar: Boolean
+    },
+    data() {
+        return {
+            
+        }
+    },
+})
 
 new Vue({
     el:'#app',
@@ -143,7 +155,8 @@ new Vue({
             user:{
                 token:'',
                 uuid:'7f7cf697-969f-4e45-83f9-01ea57ba8ea3'
-            }
+            },
+            isSidebar:false //Sidebar開關
         }
     },
     created(){
@@ -197,6 +210,9 @@ new Vue({
                 default:
                     break;
             }
+        },
+        openSidebar(){
+            this.isSidebar = !this.isSidebar;
         }
         
     },
