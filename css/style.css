@@ -23,7 +23,7 @@
 }
 
 .btn-primary:not(:disabled):not(.disabled).active:focus, .btn-primary:not(:disabled):not(.disabled):active:focus, .show>.btn-primary.dropdown-toggle:focus {
-box-shadow: 0 0 0 0.2rem rgba(255, 118, 38, 0.5);
+box-shadow: 0 0 0 0.2rem rgba(255, 38, 103, 0.5);
 }
 
 .btn-primary{
@@ -34,7 +34,7 @@ box-shadow: 0 0 0 0.2rem rgba(255, 118, 38, 0.5);
 .btn-primary.focus, .btn-primary:focus {
     background-color: #F1445D;
     border-color: #F1445D;
-    box-shadow: 0 0 0 0.2rem rgba(223, 105, 50, 0.966);
+    box-shadow: 0 0 0 0.2rem rgba(255, 67, 123, 0.966);
 }
 
 .btn-primary:hover {
@@ -61,3 +61,177 @@ box-shadow: 0 0 0 0.2rem rgba(255, 118, 38, 0.5);
 .pagination{
     justify-content:center;
 }
+
+/* week4 產品管理頁面 */
+.contentBox {
+    width: 100%;
+    /* padding: 20px; */
+    min-height: 100vh;
+    transition: all 0.3s;
+  }
+  .headerNavbar{
+    background-color: rgb(69,53,101);
+  }
+  #sidebarCollapse {
+    width: 40px;
+    height: 40px;
+    background: transparent;
+    vertical-align: middle;
+  }
+
+#sidebarCollapse span {
+  width: 80%;
+  height: 2px;
+  margin: 0 auto;
+  display: block;
+  background: #fff;
+  transition: all 0.8s cubic-bezier(0.810, -0.330, 0.345, 1.375);
+}
+
+#sidebarCollapse span:first-of-type {
+  /* rotate first one */
+  transform: rotate(45deg) translate(2px, 2px);
+}
+#sidebarCollapse span:nth-of-type(2) {
+  /* second one is not visible */
+  opacity: 0;
+}
+#sidebarCollapse span:last-of-type {
+  /* rotate third one */
+  transform: rotate(-45deg) translate(1px, -1px);
+}
+#sidebarCollapse.active span {
+  /* no rotation */
+  transform: none;
+  /* all bars are visible */
+  opacity: 1;
+  margin: 5px auto;
+}
+.wrapper {
+  display: flex;
+  align-items: stretch;
+  /* perspective: 1500px;  */
+}
+
+.sidebar {
+padding: 20px;
+  min-width: 250px;
+  max-width: 250px;
+  background: rgb(50,53,86);
+  color: #fff;
+  transition: all 0.6s cubic-bezier(0.945, 0.020, 0.270, 0.665);
+  transform-origin: center left; /* Set the transformed position of sidebar to center left side. */
+}
+
+.sidebar.active {
+  margin-left: -250px;
+  transform: rotateY(100deg); /* Rotate sidebar vertically by 100 degrees. */
+}
+@media (max-width: 768px) {
+  /* Reversing the behavior of the sidebar: 
+     it'll be rotated vertically and off canvas by default, 
+     collapsing in on toggle button click with removal of 
+     the vertical rotation.   */
+  .sidebar {
+      margin-left: -250px;
+      transform: rotateY(100deg);
+  }
+  .sidebar.active {
+      margin-left: 0;
+      transform: none;
+  }
+
+  .contentBox.active {
+    overflow: hidden;
+    width: 100vw;
+    display: block;
+    right: -300px;
+  }
+  /* Reversing the behavior of the bars: 
+     Removing the rotation from the first,
+     last bars and reappear the second bar on default state, 
+     and giving them a vertical margin */
+  #sidebarCollapse span:first-of-type,
+  #sidebarCollapse span:nth-of-type(2),
+  #sidebarCollapse span:last-of-type {
+      transform: none;
+      opacity: 1;
+      margin: 5px auto;
+      color:  rgb(69,53,101);
+  }
+
+  /* Removing the vertical margin and make the first and last bars rotate again when the sidebar is open, hiding the second bar */
+  #sidebarCollapse.active span {
+      margin: 0 auto;
+  }
+  #sidebarCollapse.active span:first-of-type {
+      transform: rotate(45deg) translate(2px, 2px);
+  }
+  #sidebarCollapse.active span:nth-of-type(2) {
+      opacity: 0;
+  }
+  #sidebarCollapse.active span:last-of-type {
+      transform: rotate(-45deg) translate(1px, -1px);
+  }
+}
+
+.navbar {
+  padding: 15px 10px;
+  background: #fff;
+  border: none;
+  border-radius: 0;
+  margin-bottom: 40px;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-btn {
+  box-shadow: none;
+  outline: none !important;
+  border: none;
+}
+.text-center {
+  padding: 10px 0;
+}
+#sidebar a {
+  color: #f7f7e8;
+  text-align: center;
+  text-decoration:none;
+}
+
+#sidebar a:hover {
+    color: rgb(148, 142, 160);
+}
+
+.page-item.active .page-link {
+  z-index: 3;
+  color: #fff;
+  background-color: rgb(69,53,101);
+  border-color: rgb(69,53,101);
+}
+
+#sidebar ul{
+    /* position: relative; */
+}
+.sidebarIndex{
+    text-align: center;
+    line-height: 20px;
+    padding: 10px;
+}
+.sidebarIndex.active{
+    /* position: absolute; */
+    /* top:50%;
+    left: 50%; */
+    /* margin-left: -85px; */
+    width: 210px;
+    height: 40px;
+    /* padding: 10px; */
+    background-color: rgb(42,44,67);
+    border-radius: 18px ;
+}
+
+
+/*分頁 a link */
+.page-link {
+    color: rgb(97, 78, 136);
+}
+

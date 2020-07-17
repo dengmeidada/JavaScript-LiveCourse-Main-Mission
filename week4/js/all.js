@@ -1,5 +1,5 @@
-const uuid = '7f7cf697-969f-4e45-83f9-01ea57ba8ea3';
-const apiPath = 'https://course-ec-api.hexschool.io/api/';
+// const uuid = '7f7cf697-969f-4e45-83f9-01ea57ba8ea3';
+// const apiPath = 'https://course-ec-api.hexschool.io/api/';
 
 new Vue({
     el:'#app',
@@ -9,12 +9,15 @@ new Vue({
                 email:'',
                 password:'',
             },
-            token:''
+            token:'',
+            expired: '',
+            apiPath:'https://course-ec-api.hexschool.io/api/',
+            uuid : '7f7cf697-969f-4e45-83f9-01ea57ba8ea3'
         };
     },
     methods: {
         signin(){
-            const api = `${apiPath}auth/login`;
+            const api = `${this.apiPath}auth/login`;
             axios.post(api,this.user)
             .then((res)=>{
                 console.log(res);
@@ -27,19 +30,6 @@ new Vue({
                 console.log(error);
             })
         },
-        // signin() {
-        //     const api = `https://course-ec-api.hexschool.io/api/auth/login`;
-        //     axios.post(api, this.user).then((response) => {
-        //       const token = response.data.token;
-        //       const expired = response.data.expired;
-        //       // 寫入 cookie token
-        //       // expires 設置有效時間
-        //       document.cookie =`token=${token};expires=${new Date(expired * 1000)}; path=/`;
-        //       window.location = 'Products.html';
-        //     }).catch((error) => {
-        //       console.log(error);
-        //     });
-        //   },
         
     },
 }) 

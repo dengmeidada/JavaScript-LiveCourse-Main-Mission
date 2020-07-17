@@ -8,146 +8,6 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/style.css">
-
-    <style>
-    .contentBox {
-      width: 100%;
-      /* padding: 20px; */
-      min-height: 100vh;
-      transition: all 0.3s;
-    }
-    .headerNavbar{
-      background-color: rgb(69,53,101);
-    }
-    #sidebarCollapse {
-      width: 40px;
-      height: 40px;
-      background: transparent;
-    }
-
-#sidebarCollapse span {
-    width: 80%;
-    height: 2px;
-    margin: 0 auto;
-    display: block;
-    background: #fff;
-    transition: all 0.8s cubic-bezier(0.810, -0.330, 0.345, 1.375);
-}
-
-#sidebarCollapse span:first-of-type {
-    /* rotate first one */
-    transform: rotate(45deg) translate(2px, 2px);
-}
-#sidebarCollapse span:nth-of-type(2) {
-    /* second one is not visible */
-    opacity: 0;
-}
-#sidebarCollapse span:last-of-type {
-    /* rotate third one */
-    transform: rotate(-45deg) translate(1px, -1px);
-}
-#sidebarCollapse.active span {
-    /* no rotation */
-    transform: none;
-    /* all bars are visible */
-    opacity: 1;
-    margin: 5px auto;
-}
-.wrapper {
-    display: flex;
-    align-items: stretch;
-    /* perspective: 1500px;  */
-}
-
-.sidebar {
-  padding: 20px;
-    min-width: 250px;
-    max-width: 250px;
-    background: rgb(32,20,57);
-    color: #fff;
-    transition: all 0.6s cubic-bezier(0.945, 0.020, 0.270, 0.665);
-    transform-origin: center left; /* Set the transformed position of sidebar to center left side. */
-}
-
-.sidebar.active {
-    margin-left: -250px;
-    transform: rotateY(100deg); /* Rotate sidebar vertically by 100 degrees. */
-}
-@media (max-width: 768px) {
-    /* Reversing the behavior of the sidebar: 
-       it'll be rotated vertically and off canvas by default, 
-       collapsing in on toggle button click with removal of 
-       the vertical rotation.   */
-    .sidebar {
-        margin-left: -250px;
-        transform: rotateY(100deg);
-    }
-    .sidebar.active {
-        margin-left: 0;
-        transform: none;
-    }
-
-    .contentBox.active {
-      overflow-y: auto;
-      width: 100vw;
-      display: block;
-      right: -300px;
-    }
-    /* Reversing the behavior of the bars: 
-       Removing the rotation from the first,
-       last bars and reappear the second bar on default state, 
-       and giving them a vertical margin */
-    #sidebarCollapse span:first-of-type,
-    #sidebarCollapse span:nth-of-type(2),
-    #sidebarCollapse span:last-of-type {
-        transform: none;
-        opacity: 1;
-        margin: 5px auto;
-        color:  rgb(69,53,101);
-    }
-
-    /* Removing the vertical margin and make the first and last bars rotate again when the sidebar is open, hiding the second bar */
-    #sidebarCollapse.active span {
-        margin: 0 auto;
-    }
-    #sidebarCollapse.active span:first-of-type {
-        transform: rotate(45deg) translate(2px, 2px);
-    }
-    #sidebarCollapse.active span:nth-of-type(2) {
-        opacity: 0;
-    }
-    #sidebarCollapse.active span:last-of-type {
-        transform: rotate(-45deg) translate(1px, -1px);
-    }
-}
-
-.navbar {
-    padding: 15px 10px;
-    background: #fff;
-    border: none;
-    border-radius: 0;
-    margin-bottom: 40px;
-    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.navbar-btn {
-    box-shadow: none;
-    outline: none !important;
-    border: none;
-}
-.text-center {
-    padding: 10px 0;
-}
-        a {
-    color: #f7f7e8;
-        }
-        .page-item.active .page-link {
-    z-index: 3;
-    color: #fff;
-    background-color: rgb(69,53,101);
-    border-color: rgb(69,53,101);
-}
-    </style>
     
 </head>
 <body>
@@ -165,9 +25,10 @@
               <span></span>
             </button>
           </div>
-           
+         
+         
         </nav>
-        <div>
+        <div style="padding: 20px;">
             <h3 class="h3 text-center">產品管理頁面</h3>
             <div class="text-right mt4">
                 <button class="btn btn-primary" type="button" @click="openModal('new')">建立新的產品</button>
@@ -177,7 +38,7 @@
             <thead>
                 <tr>
                     <th  width="120">分類</th>
-                    <th  width="120">圖片</th>
+                    <!-- <th  width="120">圖片</th> -->
                     <th  width="120">產品名稱</th>
                     <th  width="120">原價</th>
                     <th  width="120">售價</th>
@@ -188,9 +49,9 @@
             <tbody>
                 <tr v-for="(product,key) in products" :key="product.id">
                     <td>{{ product.category }}</td>
-                    <td style="max-width: 120px;">
+                    <!-- <td>
                       <img style="width:100%;" :src="product.imageUrl[0]" alt="">
-                    </td>
+                    </td> -->
                     <td>{{ product.title }}</td>
                     <td class="text-right">{{ product.origin_price }}</td>
                     <td class="text-right">{{ product.price }}</td>
@@ -215,9 +76,9 @@
         <!-- 分頁元件 顯現-->
         <pagination :pages="pagination" @emit-pages="getProducts"></pagination>
         <!-- 建立新的產品 / 修改商品 Modal 顯現 -->
-        <product-modal ref="productModal" :status="status " :is-new="isNew" :user="user" @update="getProducts"></product-modal>
+        <product-modal ref="productModal" :status="status " :is-new="isNew" :user="user" :api-path="apiPath" @update="getProducts"></product-modal>
         <!-- 刪除商品 Modal -->
-        <del-product-modal :temp-product="tempProduct" :user="user" @update="getProducts"></del-product-modal>
+        <del-product-modal :temp-product="tempProduct" :user="user" :api-path="apiPath" @update="getProducts"></del-product-modal>
       </div>
      </div>
     </div>  
@@ -271,7 +132,7 @@
                           placeholder="請輸入圖片連結">
                       </div>
                       <div class="form-group">
-                        <div class="custom-file">
+                        <div class="custom-file" style="margin-bottom: 1rem;">
                           <label class="custom-file-label" for="customFile" data-browse="Bestand kiezen">
                             上傳圖片 不可超過 2 MB
                             <i v-if="status.fileUploading" class="fas fa-spinner fa-spin"></i>
@@ -371,26 +232,21 @@
                 </div>
                 <!-- Sidebar Links -->
                 <ul class="list-unstyled components">
-                    <li class="active"><a href="#">全部</a></li>
-                    <li><a href="#">產品管理</a></li>
-                    <li><!-- Link with dropdown items -->
+                    <li class="sidebarIndex active"><a href="#">產品管理</a></li>
+                    <li class="sidebarIndex"><a href="#">會員資料管理</a></li>
+                    <!-- <li class="sidebarIndex">
                         <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">Pages</a>
                         <ul class="collapse list-unstyled" id="homeSubmenu">
                             <li><a href="#">Page</a></li>
                             <li><a href="#">Page</a></li>
                         </ul>
-                    <li><a href="#">Portfolio</a></li>
-                    <li><a href="#">Contact</a></li>
+                    <li class="sidebarIndex"><a href="#">Portfolio</a></li>
+                    <li class="sidebarIndex"><a href="#">Contact</a></li> -->
+                </ul>
+                <ul class="list-unstyled components">
+                  <li class="sidebarIndex"><a href="#" @click="signout">登出</a></li>
                 </ul>
             </nav>
-            <!-- <div id="content"> -->
-                <!-- <button type="button" id="sidebarCollapse" class="navbar-btn" @click="openSidebar">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button> -->
-              <!-- </div> -->
-          <!-- </div> -->
         </script>
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
     integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">

@@ -22,7 +22,8 @@ Vue.component('productModal',{
         productid:'',
         status:{},
         isNew:true,
-        user:{}        
+        user:{},
+        apiPath:''        
     },
     data() {
         return {
@@ -48,11 +49,11 @@ Vue.component('productModal',{
         updateProduct(){
             console.log(this.tempProduct);
             // 新增商品
-            let api =`https://course-ec-api.hexschool.io/api/${this.user.uuid}/admin/ec/product`
+            let api =`${this.apiPath}/api/${this.user.uuid}/admin/ec/product`
             let httpMethod = 'post';
 
             if(!this.isNew){ //編輯商品
-                api = `https://course-ec-api.hexschool.io/api/${this.user.uuid}/admin/ec/product/${this.tempProduct.id}`
+                api = `${this.apiPath}/api/${this.user.uuid}/admin/ec/product/${this.tempProduct.id}`
                 httpMethod = 'patch';
             }
 
@@ -72,7 +73,7 @@ Vue.component('productModal',{
             console.log(this.$refs.file.files[0]);
             const formData = new FormData();  // 一開始表單的資料是空的
             formData.append('file',uploadFile);
-            const url = `https://course-ec-api.hexschool.io/api/${this.user.uuid}/admin/storage`
+            const url = `${this.apiPath}/api/${this.user.uuid}/admin/storage`
             this.fileUploading = true;
             axios.post(url,formData,{
                 headers:{
@@ -104,7 +105,8 @@ Vue.component('delProductModal',{
         tempProduct:{
             imageUrl:[]
         },
-        user:{}
+        user:{},
+        apiPath:''
     },
     data() {
         return {
@@ -112,7 +114,7 @@ Vue.component('delProductModal',{
       },
     methods:{
         delProduct(){
-            const api = `https://course-ec-api.hexschool.io/api/${this.user.uuid}/admin/ec/product/${this.tempProduct.id}`;
+            const api = `${this.apiPath}/api/${this.user.uuid}/admin/ec/product/${this.tempProduct.id}`;
             
             axios.defaults.headers.common.Authorization = `Bearer ${this.user.token}`;
 
@@ -137,6 +139,13 @@ Vue.component('sidebarItem',{
             
         }
     },
+    methods:{
+        // 登出
+        signout() {
+            document.cookie = `token=;expires=; path=/`;
+            location.href="Login.html"
+        }
+    }
 })
 
 new Vue({
@@ -156,6 +165,7 @@ new Vue({
                 token:'',
                 uuid:'7f7cf697-969f-4e45-83f9-01ea57ba8ea3'
             },
+            apiPath:'https://course-ec-api.hexschool.io',
             isSidebar:false //Sidebar開關
         }
     },
@@ -172,7 +182,7 @@ new Vue({
     methods: {
         // 取得產品資料
         getProducts(page = 1){
-            const api = `https://course-ec-api.hexschool.io/api/${this.user.uuid}/admin/ec/products?page=${page}`
+            const api = `${this.apiPath}/api/${this.user.uuid}/admin/ec/products?page=${page}`
             
             // 預設token
             axios.defaults.headers.common.Authorization = `Bearer ${this.user.token}`;
@@ -214,6 +224,7 @@ new Vue({
         openSidebar(){
             this.isSidebar = !this.isSidebar;
         }
+        
         
     },
 })

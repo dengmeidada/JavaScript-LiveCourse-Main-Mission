@@ -3,10 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>管理者會員登入</title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
     integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+      html, body {
+          height: 100%;
+          text-align: center;
+      }
+      body {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+      }
+      @media (min-width: 576px){
+          .container {
+              max-width: 540px;
+          }
+      }
+
+    </style>
 </head>
 <body>
     <div id="app">
@@ -28,9 +47,9 @@
                 <button class="btn btn-lg btn-primary btn-block" type="submit">
                   登入
                 </button>
-                <button class="btn btn-outline-primary btn-block" type="button" >
+                <!-- <button class="btn btn-outline-primary btn-block" type="button" >
                   登出
-              </button>
+              </button> -->
             </form>
         </div>
     </div>
