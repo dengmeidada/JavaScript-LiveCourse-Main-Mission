@@ -197,6 +197,7 @@ new Vue({
         },
         // 開啟 浮出視窗
         openModal(isNew,product){
+            console.log(isNew,product)
             switch(isNew){
                 case 'new':
                     this.tempProduct = {
