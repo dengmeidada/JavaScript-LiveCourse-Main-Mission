@@ -93,9 +93,27 @@ body{
 }
 
 #cartModal{
+    background-color: #fff;
     font-size: .9rem;
 }
 
 .cartMenu .title{
     font-size:1rem;
 }
+
+.card-body{
+    background-color: #fff;
+}
+
+.card-header,.card-footer {
+    background-color: #F7F7F7;
+}
+
+/* .modal.fade.show{
+    background: hsla(0,0%,100%,.65);
+} */
+/* .modal.show .modal-dialog {
+    -webkit-transform: none;
+    transform: none;
+    background: hsla(0,0%,100%,.65);
+} */
