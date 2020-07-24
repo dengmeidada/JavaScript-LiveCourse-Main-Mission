@@ -25,11 +25,10 @@
             <a class="navbar-brand" href="index.html">mei</a>
             <div class="cartItem">
               <!-- 購物車icon 始-->
-              <div class="cart"  @click="openModal('cart')">
+              <div class="cart pr-1"  @click="openModal('cart')">
                 <div class="cart-icon">
                     <span class="totalItems">{{carts.length}}</span>
                     <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                    <!-- <div class="cart-icon-text">購 物 車</div> -->
                 </div>
               </div>
               <!-- 購物車icon 末-->
@@ -43,19 +42,6 @@
                 <li class="nav-item">
                   <a class="nav-link" href="order.html">產品訂單</a>
                 </li>
-                 <!--<li class="nav-item">
-                   <a class="nav-link" href="#">Pricing</a>
-                </li>
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Dropdown link
-                  </a>
-                  <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                  </div>
-                </li> -->
               </ul>
             </div>
         </nav>
@@ -63,7 +49,7 @@
 
         <div class="container">
           <!-- 購物車 Modal 顯現 -->
-          <cart-modal ref="cartModal" :status="status " :uuid="uuid" :api-path="apiPath" :is-cart.sync="isCart" :isLoading.sync="isLoading" v-on:carts="updatedCarts"></cart-modal>
+          <cart-modal ref="cartModal" :uuid="uuid" :api-path="apiPath" :is-cart.sync="isCart" v-on:carts="updatedCarts"></cart-modal>
           <!-- v-on:carts 由此接收子元件carts資料，觸發updatedCarts方法 接收資料 -->
 
             <div class="header">
@@ -110,19 +96,26 @@
         </div>
 
         <!-- 產品詳情 Modal 顯現 (查看更多)-->
-        <product-modal ref="productModal" :status="status " :uuid="uuid" :api-path="apiPath"></product-modal>
+        <product-modal ref="productModal" :uuid="uuid" :api-path="apiPath"></product-modal>
 
     </div>
 
     <!-- 產品詳情 Modal 始 -->
     <script type="text/x-template" id="productModal">
-        <div id="productModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+        <div  id="productModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+          <div class="loading">
+              <!-- loading 套件 始 (放入子元件中) -->
+              <loading :active.sync="isLoading"></loading>
+              <!-- loading 套件 末 -->  
+          </div>
           <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
+                    <h6 class="mb-0" style="line-height:2;">{{ tempProduct.title }}</h6>
+                    
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
+                      <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
                 <div class="modal-body">
                     <img :src="tempProduct.imageUrl[0]" class="img-fluid" alt>
@@ -134,11 +127,11 @@
                     </blockquote>
                     <div class="d-flex justify-content-between align-items-baseline">                      
                         <span class="completed">
-                            <span class="currencyIdentifier">原價 NT$</span>
+                            <span class="currencyIdentifier">原價 NT$ </span>
                             <span class="originPrice"> {{ tempProduct.origin_price }}</span>
                         </span> 
                         <span class="priceItem">
-                            <span class="currencyIdentifier">特價 NT$</span>
+                            <span class="currencyIdentifier">特價 NT$ </span>
                             <span class="price">{{ tempProduct.price }}&nbsp;</span>
                         </span>
                       </div>
@@ -158,15 +151,19 @@
                
             </div>
           </div>
-        </div>
+        </div>     
     </script>
     <!-- 產品詳情 Modal 末 -->
 
       <!-- 購物車 Modal 始 -->
       <script type="text/x-template" id="cartModal">
-        
-        <div class="cartbox" >
-          {{isCart}}
+        <div class="cartbox" id="cartModal">
+          <div class="loading">
+            <!-- loading 套件 始 (放入子元件中) -->
+            <loading :active.sync="isLoading"></loading>
+            <!-- loading 套件 末 -->  
+          </div>
+          <!-- {{isCart}} -->
           <!-- 購物車 始 -->
           <div v-if="isCart" :class="{ cartMenu:isCart }">
             <div class="overlay" @click="closeCart"></div>

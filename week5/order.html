@@ -13,6 +13,7 @@
       
 </head>
 <body>
+  <template></template>
     <div id="app">
         <!-- navbar 始 -->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -22,11 +23,10 @@
             <a class="navbar-brand" href="index.html">mei</a>
             <div class="cartItem">
               <!-- 購物車icon 始-->
-              <div class="cart"  @click="openModal('cart')">
+              <div class="cart pr-1"  @click="openModal('cart')">
                 <div class="cart-icon">
                     <span class="totalItems">{{carts.length}}</span>
                     <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                    <!-- <div class="cart-icon-text">購 物 車</div> -->
                 </div>
               </div>
               <!-- 購物車icon 末-->
@@ -40,19 +40,6 @@
                 <li class="nav-item active">
                   <a class="nav-link" href="order.html">產品訂單</a>
                 </li>
-                <!-- <li class="nav-item">
-                  <a class="nav-link" href="#">Pricing</a>
-                </li>
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Dropdown link
-                  </a>
-                  <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                  </div>
-                </li> -->
               </ul>
             </div>
         </nav>
@@ -60,7 +47,8 @@
 
         <div class="container">
             <!-- 購物車 Modal 顯現 -->
-            <cart-modal ref="cartModal" :status="status " :uuid="uuid" :api-path="apiPath" :is-cart.sync="isCart" v-on:carts="updatedCarts"></cart-modal>
+            <cart-modal ref="cartModal" :uuid="uuid" :api-path="apiPath" :is-cart.sync="isCart" v-on:carts="updatedCarts">
+            </cart-modal>
             <!-- v-on:carts 由此接收子元件carts資料，觸發updatedCarts方法 接收資料 -->
 
             <!--訂單頁面 表單驗證 Modal 開始-->
@@ -146,222 +134,167 @@
             <!--訂單頁面 表單驗證 Modal 結束-->
         </div>
 
-
-        <!-- 產品詳情 Modal 顯現 (查看更多)-->
-        <product-modal ref="productModal" :status="status " :uuid="uuid" :api-path="apiPath"></product-modal>
         <!-- 訂單完成 Modal 顯現 -->
-        <order-modal ref="orderModal" :status="status " :uuid="uuid" :api-path="apiPath"></order-modal>
-
-        
+        <order-modal ref="orderModal"  :uuid="uuid" :api-path="apiPath"></order-modal>
 
     </div>
 
-    <!-- 產品詳情 Modal 始 -->
-    <script type="text/x-template" id="productModal">
-        <div id="productModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                </div>
-                <div class="modal-body">
-                    <img :src="tempProduct.imageUrl[0]" class="img-fluid" alt>
-                    <blockquote class="blockquote mt-3">
-                        <p class="mb-0" v-html="tempProduct.content"></p>
-                        <footer class="blockquote-footer text-right">
-                        {{ tempProduct.description }}
-                        </footer>
-                    </blockquote>
-                    <div class="d-flex justify-content-between align-items-baseline">
-                        <!-- <div v-if="!tempProduct.price" class="h4">
-                          {{ tempProduct.origin_price }} 元
-                        </div>
-                        <del v-if="tempProduct.price" class="h6">原價 {{ tempProduct.origin_price }} 元</del>
-                        <div v-if="tempProduct.price" class="h4">
-                          現在只要 {{ tempProduct.price }} 元
-                        </div> -->
-                       
-                        <span class="completed">
-                            <span class="currencyIdentifier">原價 {{ tempProduct.unit }}</span>
-                            <span class="originPrice"> {{ tempProduct.origin_price }}</span>
-                        </span> 
-                        <span class="priceItem">
-                            <span class="currencyIdentifier">特價 {{tempProduct.unit}}</span>
-                            <span class="price">{{ tempProduct.price }}&nbsp;</span>
-                        </span>
-                      </div>
-                      <select v-model="tempProduct.num" name class="form-control mt-3">
-                        <option value="0" disabled selected>
-                          請選擇數量
-                        </option>
-                        <option v-for="num in 10" :key="num" :value="num">
-                          選購 {{ num }} {{ tempProduct.unit }}
-                        </option>
-                      </select>
-                    </div>
-                     <div class="modal-footer">
-                    <button type="button" class="btn btn-primary btn-sm ml-auto" @click="productDetailAddToCart(tempProduct)">加入購物車</button>
-                </div>
-                </div>
-               
-            </div>
-          </div>
-        </div>
-    </script>
-    <!-- 產品詳情 Modal 末 -->
+   
 
     <!-- 購物車 Modal 始 -->
     <script type="text/x-template" id="cartModal">
-        <!-- <div v-if="!isCart" class="cartbox" id="cartModal">
-            { cartModal:isCart }
-        </div> -->
-        <div  class="cartbox" >
-            <div  id="cartModal" class="test" >
-                {{isCart}}
-                <div>
-                    <div class="content">
-                        <div class="header">
-                          <h5 class="title text-center">購物清單</h5>
-                        </div>
-                        <div class="body">
-                            <div class="cart-menu">
-                                <!-- <span class="text-left mb-3">
-                                    
-                                </span> -->
-                                <div class="d-flex mb-3">
-                                    <div class="col-6">
-                                        <span class="text-left">目前有共 {{cart.length}} 件 商品</span>
-                                    </div>
-                                    
-                                    <div class="col-6 text-right">
-                                        <button type="button" class="btn btn-outline-danger btn-sm" @click="removeAllCartItem()">
-                                        <i class="far fa-trash-alt"> 刪除所有品項</i>
-                                        </button>
-                                    </div>
-                                    
+        <div  class="cartbox" id="cartModal">
+            
+            <div class="loading">
+              <!-- loading 套件 始 (放入子元件中) -->
+              <loading :active.sync="isLoading"></loading>
+              <!-- loading 套件 末 -->  
+            </div>
+
+            <!-- 購物清單 始 -->
+            <div>
+                <div class="content">
+                    <div class="header">
+                      <h5 class="title text-center">購物清單</h5>
+                    </div>
+                    <div class="body">
+                        <div class="cart-menu">
+                            <!-- <span class="text-left mb-3">
+                                
+                            </span> -->
+                            <div class="d-flex mb-3">
+                                <div class="col-6">
+                                    <span class="text-left">目前有共 {{cart.length}} 件 商品</span>
                                 </div>
-                            
-                            <table class="table">
-                                <thead>
-                                  <th>刪除</th>
-                                  <th>品名</th>
-                                  <th width="150px">
-                                    數量
-                                  </th>
-                                  <th>單位</th>
-                                  <th>單價</th>
-                                </thead>
+                                
+                                <div class="col-6 text-right">
+                                    <button type="button" class="btn btn-outline-danger btn-sm" @click="removeAllCartItem()">
+                                    <i class="far fa-trash-alt"> 刪除所有品項</i>
+                                    </button>
+                                </div>
+                                
+                            </div>
+                        
+                        <table class="table">
+                            <thead>
+                              <th>刪除</th>
+                              <th>品名</th>
+                              <th width="150px">
+                                數量
+                              </th>
+                              <th>單位</th>
+                              <th>單價</th>
+                            </thead>
+                            <tbody v-if="cart.length">
+                              <tr v-for="item in cart" :key="item.id">
+                                <td class="align-middle">
+                                    <!-- 移除購物車產品 -->
+                                  <button type="button" class="btn btn-outline-danger btn-sm" @click="removeCartItem(item.product.id)">
+                                    <i class="far fa-trash-alt"></i>
+                                  </button>
+                                </td>
+                                <td class="align-middle">
+                                  {{ item.product.title }}
+                                </td>
+                                <td class="align-middle">
+                                  <div class="input-group">
+                                    <div class="input-group-prepend">
+                                      <button class="btn btn-outline-primary"
+                                        @click="quantityUpdata(item.product.id, item.quantity + 1)">
+                                        +
+                                      </button>
+                                    </div>
+                                    <input id="inlineFormInputGroupUsername" type="text" class="form-control text-center"
+                                      :value="item.quantity" @keyup.enter="quantityUpdata(item.product.id, $event.target.value)">
+                                    <div class="input-group-append">
+                                      <button class="btn btn-outline-primary"
+                                        @click="quantityUpdata(item.product.id, item.quantity - 1)">
+                                        -
+                                      </button>
+                                    </div>
+                                  </div>
+                                </td>
+                                <td class="align-middle">
+                                  {{ item.product.unit }}
+                                </td>
+                                <td class="align-middle text-right">
+                                    NT$ {{ item.product.price }}
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          </div>
+                          <div class="text-right">
+                            <span colspan="4" class="text-right">
+                                總計
+                            </span>
+                            <span class="text-right">
+                                NT$ {{ cartTotal }}
+                            </span>
+                        </div>  
+                    </div>
+                </div>
+            </div>
+             <!-- 購物清單 末 -->
+            
+            <!-- 購物車 始 -->
+            {{ isCart }}
+            <div v-if="isCart" :class="{ cartMenu:isCart }">
+                <div class="overlay" @click="closeCart"></div>
+                <div  class="dialog-centered cartModalItem" role="document">
+                    <div class="content">
+                      <div class="card-header p-3">
+                        <span class="title">已選購商品</span>
+                        <button type="button" class="close" aria-label="Close" @click="closeCart">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                      </div>
+                      <div class="card-body p-3">
+                            <div class="cart-menu-scroll">
+                                <div class="text-right mb-3">
+                                  <button type="button" class="btn btn-outline-danger btn-sm" @click="removeAllCartItem()">
+                                    <i class="far fa-trash-alt"> 刪除所有品項</i>
+                                  </button>
+                                </div>
+                          
+                                <table class="table-sm">
                                 <tbody v-if="cart.length">
-                                  <tr v-for="item in cart" :key="item.id">
+                                    <tr v-for="item in cart" :key="item.id">
                                     <td class="align-middle">
                                         <!-- 移除購物車產品 -->
-                                      <button type="button" class="btn btn-outline-danger btn-sm" @click="removeCartItem(item.product.id)">
+                                        <button type="button" class="btn btn-outline-danger btn-sm" @click="removeCartItem(item.product.id)">
                                         <i class="far fa-trash-alt"></i>
-                                      </button>
+                                        </button>
                                     </td>
+                                    <td class="align-middle "><div class="cart-img mt-2" :style="{backgroundImage: `url(${item.product.imageUrl})`}"></div></td>
                                     <td class="align-middle">
-                                      {{ item.product.title }}
-                                    </td>
-                                    <td class="align-middle">
-                                      <div class="input-group">
-                                        <div class="input-group-prepend">
-                                          <button class="btn btn-outline-primary"
-                                            @click="quantityUpdata(item.product.id, item.quantity + 1)">
-                                            +
-                                          </button>
-                                        </div>
-                                        <input id="inlineFormInputGroupUsername" type="text" class="form-control text-center"
-                                          :value="item.quantity" @keyup.enter="quantityUpdata(item.product.id, $event.target.value)">
-                                        <div class="input-group-append">
-                                          <button class="btn btn-outline-primary"
-                                            @click="quantityUpdata(item.product.id, item.quantity - 1)">
-                                            -
-                                          </button>
-                                        </div>
-                                      </div>
-                                    </td>
-                                    <td class="align-middle">
-                                      {{ item.product.unit }}
+                                        <span>{{ item.product.title }}</span>
+                                        <p>x {{item.quantity}} / {{ item.product.unit }}</p>
                                     </td>
                                     <td class="align-middle text-right">
                                         NT$ {{ item.product.price }}
                                     </td>
-                                  </tr>
+                                    </tr>
                                 </tbody>
-                              </table>
-                              </div>
-                              <div class="text-right">
-                                <span colspan="4" class="text-right">
-                                    總計
-                                </span>
-                                <span class="text-right">
-                                    NT$ {{ cartTotal }}
-                                </span>
-                            </div>  
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- 購物車 始 -->
-                <div v-if="isCart" :class="{ cartMenu:isCart }">
-                    <div class="overlay" @click="closeCart"></div>
-                    <div  class="dialog-centered cartModalItem" role="document">
-                        <div class="content">
-                          <div class="card-header p-3">
-                            <span class="title">已選購商品</span>
-                            <button type="button" class="close" aria-label="Close" @click="closeCart">
-                                <span aria-hidden="true">&times;</span>
-                              </button>
-                          </div>
-                          <div class="card-body p-3">
-                                <div class="cart-menu-scroll">
-                                    <div class="text-right mb-3">
-                                      <button type="button" class="btn btn-outline-danger btn-sm" @click="removeAllCartItem()">
-                                        <i class="far fa-trash-alt"> 刪除所有品項</i>
-                                      </button>
-                                    </div>
-                              
-                                    <table class="table-sm">
-                                    <tbody v-if="cart.length">
-                                        <tr v-for="item in cart" :key="item.id">
-                                        <td class="align-middle">
-                                            <!-- 移除購物車產品 -->
-                                            <button type="button" class="btn btn-outline-danger btn-sm" @click="removeCartItem(item.product.id)">
-                                            <i class="far fa-trash-alt"></i>
-                                            </button>
-                                        </td>
-                                        <td class="align-middle "><div class="cart-img mt-2" :style="{backgroundImage: `url(${item.product.imageUrl})`}"></div></td>
-                                        <td class="align-middle">
-                                            <h6>{{ item.product.title }}</h6>
-                                            <p>x {{item.quantity}} / {{ item.product.unit }}</p>
-                                        </td>
-                                        <td class="align-middle text-right">
-                                            NT$ {{ item.product.price }}
-                                        </td>
-                                        </tr>
-                                    </tbody>
-                                    </table>
-                                </div>
-                                <div class="text-right">
-                                  <span colspan="4" class="text-right">
-                                      總計
-                                  </span>
-                                  <span class="text-right">
-                                    NT$ {{ cartTotal }}
-                                  </span>
-                              </div>  
-                          </div>
-                          <div class="card-footer text-right p-3"> 
-                            <button type="button" class="btn btn-secondary" @click="closeCart">取消</button>
-                            <button type="button" class="btn btn-primary" @click="goOrder">結帳</button>
-                          </div>
-                        </div>
+                                </table>
+                            </div>
+                            <div class="text-right">
+                              <span colspan="4" class="text-right">
+                                  總計
+                              </span>
+                              <span class="text-right">
+                                NT$ {{ cartTotal }}
+                              </span>
+                          </div>  
                       </div>
-                </div>
-                
+                      <div class="card-footer text-right p-3"> 
+                        <button type="button" class="btn btn-secondary" @click="closeCart">取消</button>
+                        <button type="button" class="btn btn-primary" @click="goOrder">結帳</button>
+                      </div>
+                    </div>
+                  </div>
             </div>
+            
         </div>     
     </script>
     <!-- 購物車 Modal 末 -->
@@ -370,6 +303,11 @@
     <script type="text/x-template" id="orderModal">
         <div class="modal fade" id="orderModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
+        <div class="loading">
+          <!-- loading 套件 始 (放入子元件中) -->
+          <loading :active.sync="isLoading"></loading>
+          <!-- loading 套件 末 -->  
+      </div>
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">

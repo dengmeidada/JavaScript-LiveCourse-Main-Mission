@@ -1,3 +1,6 @@
+body{
+    font-size: 14px;
+}
 .navbar{
     position: sticky;
     top: 0;
@@ -27,8 +30,8 @@
     font-size: .7rem;
     padding: 0 6px;
     position: absolute;
-    right: 4px;
-    top: 15px;
+    right: 7px;
+    top: 18px;
 }
 .fa-shopping-cart{
     /* line-height: 20px; */
@@ -87,4 +90,12 @@
 
 .cartModalItem{
     z-index: 1000;
+}
+
+#cartModal{
+    font-size: .9rem;
+}
+
+.cartMenu .title{
+    font-size:1rem;
 }
