@@ -84,6 +84,9 @@
         <!-- 產品詳情 Modal 顯現 (查看更多)-->
         <product-modal ref="productModal" :uuid="uuid" :api-path="apiPath"></product-modal>
 
+        <!-- 加入購物車訊息 Modal 顯現 -->
+        <order-modal ref="orderModal"  :uuid="uuid" :api-path="apiPath" :error-msg="errorMsg" :is-Error-Msg.sync="isErrorMsg"></order-modal>
+
     </div>
 
     <!-- 產品詳情 Modal 始 -->
@@ -209,6 +212,32 @@
         </div>     
     </script>
     <!-- 購物車 Modal 末 -->
+
+    <!-- 加入購物車訊息 Modal 始 -->
+    <script type="text/x-template" id="orderModal">
+      <div class="modal fade" id="orderModal" tabindex="-1" role="dialog" data-target="#exampleModalCenter"
+      aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="exampleModalCenterTitle" style="color:#FD536F;">注意</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="isErrorMsgSwitch">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <h5 v-if="!isErrorMsg">成功加入購物車。</h5>
+            <h5 v-else-if="isErrorMsg" >{{errorMsg}}</h5>
+          </div>
+          <div class="modal-footer">
+            <button v-if="!isErrorMsg" type="button" class="btn btn-secondary" data-dismiss="modal" >關閉</button>
+            <button v-else-if="isErrorMsg" type="button" class="btn btn-secondary" data-dismiss="modal" @click="isErrorMsgSwitch">關閉</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </script>
+  <!-- 加入購物車訊息 Modal 末 -->
     
     
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"

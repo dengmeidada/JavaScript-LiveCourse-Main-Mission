@@ -115,7 +115,7 @@ Vue.component('cartModal',{
         // 取得購物資訊
         getCart(){
             this.isLoading = true;
-
+            console.log("這??");
             const apiUrl = `${this.apiPath}/api/${this.uuid}/ec/shopping`;
             
             axios({
@@ -131,7 +131,7 @@ Vue.component('cartModal',{
                 });
                 this.$emit('carts',this.cart); //把資料傳給父元件
                 this.isLoading = false;
-            
+                console.log("還是這??");
             }).catch((error)=>{
                 console.error(error);
             })
@@ -210,19 +210,27 @@ Vue.component('orderModal',{
     props:{
         productId:'',
         uuid:'',
-        apiPath:''        
+        apiPath:'',
+        errorMsg:'',
+        isErrorMsg:false        
     },
     data() {
         return {
             tempProduct:{
                 imageUrl:[]
             },
-
             isLoading: false, // Loading 開關
+            isNewErrorMsg:false
         }
     },  
     methods:{
-       
+        isErrorMsgSwitch(){
+            console.log(this.errorMsg);
+            if(this.isErrorMsg === true){
+                this.$emit('update:isErrorMsg',this.isNewErrorMsg);
+            }
+            
+        }
     }
 })
 
@@ -246,6 +254,8 @@ new Vue({
             cartTotal: 0,
             isCart:false, // 購物車視窗開關
             isLoading: false, // Loading 開關
+            errorMsg:'',
+            isErrorMsg:false
         }
     },
     created() {
@@ -283,14 +293,18 @@ new Vue({
                 url:apiUrl,
                 data:cart
             }).then((res)=>{
+                this.errorMsg = ''; //清掉錯誤訊息
+                this.isErrorMsg = false;
                 $('#productModal').modal('hide');
-
+                $('#orderModal').modal('show');
                 // 重新渲染購物車
                 this.$refs.cartModal.getCart();
             }).catch((error) => {
-
-                console.log(error.response.data.errors);
+                console.log(error.response.data.errors[0]);
+                this.errorMsg = error.response.data.errors[0]
+                this.isErrorMsg = true;
                 $('#productModal').modal('hide');
+                $('#orderModal').modal('show');
             });
         },
         // 開啟 浮出視窗
