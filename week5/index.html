@@ -66,11 +66,9 @@
                     <span class="badge badge-secondary float-right ml-2">{{ item.category }}</span>
                     <h5 class="card-title">{{ item.title }}</h5>
                     <span class="priceItem">
-                        <!-- <span class="currencyIdentifier">NT$ </span> -->
                         <span class="price">{{ item.price | priceThousands }}&nbsp;</span>
                     </span>
                     <span class="completed">
-                        <!-- <span class="currencyIdentifier">NT$ </span> -->
                         <span class="originPrice">{{ item.origin_price | priceThousands }}</span>
                     </span>
                 </div>
@@ -185,7 +183,7 @@
                                     <p>x {{item.quantity}} / {{ item.product.unit }}</p>
                                 </td>
                                 <td class="align-middle text-right">
-                                    NT$ {{ item.product.price | priceThousands}}
+                                    {{ item.product.price | priceThousands}}
                                 </td>
                                 </tr>
                             </tbody>
@@ -196,7 +194,7 @@
                               總計
                           </span>
                           <span class="text-right">
-                            NT$ {{ cartTotal }}
+                            {{ cartTotal | priceThousands}}
                           </span>
                       </div>  
                   </div>
