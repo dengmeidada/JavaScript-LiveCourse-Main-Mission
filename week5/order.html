@@ -218,7 +218,7 @@
                                   {{ item.product.unit }}
                                 </td>
                                 <td class="align-middle text-right">
-                                    NT$ {{ item.product.price }}
+                                     {{ item.product.price | priceThousands }}
                                 </td>
                               </tr>
                             </tbody>
@@ -229,7 +229,7 @@
                                 總計
                             </span>
                             <span class="text-right">
-                                NT$ {{ cartTotal }}
+                                 {{ cartTotal | priceThousands }}
                             </span>
                         </div>  
                     </div>
@@ -238,7 +238,7 @@
              <!-- 購物清單 末 -->
             
             <!-- 購物車 始 -->
-            {{ isCart }}
+            <!-- {{ isCart }} -->
             <div v-if="isCart" :class="{ cartMenu:isCart }">
                 <div class="overlay" @click="closeCart"></div>
                 <div  class="dialog-centered cartModalItem" role="document">
@@ -272,7 +272,7 @@
                                         <p>x {{item.quantity}} / {{ item.product.unit }}</p>
                                     </td>
                                     <td class="align-middle text-right">
-                                        NT$ {{ item.product.price }}
+                                        {{ item.product.price | priceThousands }}
                                     </td>
                                     </tr>
                                 </tbody>
@@ -283,7 +283,7 @@
                                   總計
                               </span>
                               <span class="text-right">
-                                NT$ {{ cartTotal }}
+                                 {{ cartTotal | priceThousands }}
                               </span>
                           </div>  
                       </div>
@@ -301,17 +301,17 @@
 
     <!-- 訂單完成 Modal 始 -->
     <script type="text/x-template" id="orderModal">
-        <div class="modal fade" id="orderModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        <div class="modal fade" id="orderModal" tabindex="-1" role="dialog" data-target="#exampleModalCenter"
         aria-hidden="true">
         <div class="loading">
           <!-- loading 套件 始 (放入子元件中) -->
           <loading :active.sync="isLoading"></loading>
           <!-- loading 套件 末 -->  
       </div>
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">完成訂單</h5>
+              <h5 class="modal-title" id="exampleModalCenterTitle">完成訂單</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>

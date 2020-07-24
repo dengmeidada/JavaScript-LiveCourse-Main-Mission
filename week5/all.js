@@ -16,6 +16,14 @@ VeeValidate.configure({
 Vue.use(VueLoading);
 
 
+// 全域 filter 千分位 註:在productModal無法使用，value會出現 undefined
+Vue.filter('priceThousands',(value)=>{
+    // console.log(value)
+    const intPart = value.toString().split('.');
+    intPart[0] = intPart[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    return 'NT$' + intPart.join('.');
+})
+
 
 // 註冊全域元件
 //將 VeeValidate input驗證工具載入
@@ -40,8 +48,14 @@ Vue.component('productModal',{
             },
             isLoading:false
         }
-    },  
+    },
     methods:{
+        //千分位方法(因為productModal藉由click抓取id後才載入對應產品，無法使用filter方法，因此使用其法轉換 註:用filter方法無法出取其值，會出現undefined)
+        priceFormat:function(value){
+            const intPart = value.toString()  //轉字串
+            const intPartFormat = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            return  'NT$ ' + intPartFormat;
+        },
         //取得單一產品細節資料(查看更多)
         getDetail(id){ //取得點擊產品id
             console.log(id);
@@ -54,6 +68,11 @@ Vue.component('productModal',{
                 console.log(res.data.data);
                 this.tempProduct = res.data.data
                 this.$set(this.tempProduct, 'num', 0);
+
+                //使其值轉為千分為表示
+                this.tempProduct.price = this.priceFormat(this.tempProduct.price);
+                this.tempProduct.origin_price = this.priceFormat(this.tempProduct.origin_price);
+
                 $('#productModal').modal('show');
 
             }).catch((error)=>{
@@ -91,7 +110,7 @@ Vue.component('cartModal',{
     created(){
         // 在進入網頁時，事先取得購物資料
         this.getCart();
-    },
+    },    
     methods:{
         // 取得購物資訊
         getCart(){
@@ -265,7 +284,7 @@ new Vue({
                 data:cart
             }).then((res)=>{
                 $('#productModal').modal('hide');
-                
+
                 // 重新渲染購物車
                 this.$refs.cartModal.getCart();
             }).catch((error) => {
@@ -279,7 +298,7 @@ new Vue({
             console.log(isNew,product)
             switch(isNew){
                 case 'detail':  //產品詳情
-                    this.tempProduct = Object.assign({}, product); //淺層複製
+                    this.tempProduct = JSON.parse(JSON.stringify( product)); //淺層複製
                     // 使用 refs 觸發子元件方法
                     this.$refs.productModal.getDetail(this.tempProduct.id); //把此商品id傳進getDetail function->抓取對應商品資訊
                     break
