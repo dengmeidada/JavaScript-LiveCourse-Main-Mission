@@ -23,6 +23,11 @@ body{
     width: 60px;
     text-align: center;
 }
+.cart{
+    position: absolute;
+    right: 15px;
+    top: 18px;
+}
 .cart-icon .totalItems {
     background: #e67676;
     border-radius: 10px;
@@ -30,9 +35,11 @@ body{
     font-size: .7rem;
     padding: 0 6px;
     position: absolute;
-    right: 7px;
-    top: 18px;
+    right: -5px;
+    top: 0px;
 }
+
+
 .fa-shopping-cart{
     /* line-height: 20px; */
     padding-top: 8px;
