@@ -226,8 +226,8 @@
             </button>
           </div>
           <div class="modal-body">
-            <h5 v-if="!isErrorMsg">成功加入購物車。</h5>
-            <h5 v-else-if="isErrorMsg" >{{errorMsg}}</h5>
+            <h5 v-if="!isErrorMsg && errorMsg ===''">成功加入購物車。</h5>
+            <h5 v-if="isErrorMsg">{{errorMsg}}</h5>
           </div>
           <div class="modal-footer">
             <button v-if="!isErrorMsg" type="button" class="btn btn-secondary" data-dismiss="modal" >關閉</button>
