@@ -1,0 +1,364 @@
+.completed {
+    text-decoration: line-through
+}
+.card{
+    cursor: pointer; 
+}
+.completed {
+    text-decoration: line-through;
+    color: #bababa;
+    font-size: .8em;
+}
+
+.priceItem{
+    color: #FD536F;
+    font-size: 1.2em;
+    line-height: 1.2;
+}
+
+.btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
+    color: #fff;
+    background-color: #FD536F;
+    border-color: #FD536F;
+}
+
+.btn-primary:not(:disabled):not(.disabled).active:focus, .btn-primary:not(:disabled):not(.disabled):active:focus, .show>.btn-primary.dropdown-toggle:focus {
+box-shadow: 0 0 0 0.2rem rgba(255, 38, 103, 0.5);
+}
+
+.btn-primary{
+    background-color: #FD536F;
+    border-color:#FD536F;
+}
+
+.btn-primary.focus, .btn-primary:focus {
+    background-color: #F1445D;
+    border-color: #F1445D;
+    box-shadow: 0 0 0 0.2rem rgba(255, 67, 123, 0.966);
+}
+
+.btn-primary:hover {
+    color: #fff;
+    background-color: #F1445D;
+    border-color: #F1445D;
+}
+
+.figure-img{
+    padding: 10px;
+    margin:50px;
+}
+
+.footer {
+    margin-top: 50px;
+    /* background: #212121; */
+    text-align: center;
+    padding: 5px;
+    /* color: #fff; */
+    color: #212121;
+  }
+
+/* 分頁 */
+.pagination{
+    justify-content:center;
+}
+
+/* week4 產品管理頁面 */
+.contentBox {
+    width: 100%;
+    /* padding: 20px; */
+    min-height: 100vh;
+    transition: all 0.3s;
+  }
+  .headerNavbar{
+    background-color: rgb(69,53,101);
+  }
+  #sidebarCollapse {
+    width: 40px;
+    height: 40px;
+    background: transparent;
+    vertical-align: middle;
+  }
+
+#sidebarCollapse span {
+  width: 80%;
+  height: 2px;
+  margin: 0 auto;
+  display: block;
+  background: #fff;
+  transition: all 0.8s cubic-bezier(0.810, -0.330, 0.345, 1.375);
+}
+
+#sidebarCollapse span:first-of-type {
+  /* rotate first one */
+  transform: rotate(45deg) translate(2px, 2px);
+}
+#sidebarCollapse span:nth-of-type(2) {
+  /* second one is not visible */
+  opacity: 0;
+}
+#sidebarCollapse span:last-of-type {
+  /* rotate third one */
+  transform: rotate(-45deg) translate(1px, -1px);
+}
+#sidebarCollapse.active span {
+  /* no rotation */
+  transform: none;
+  /* all bars are visible */
+  opacity: 1;
+  margin: 5px auto;
+}
+.wrapper {
+  display: flex;
+  align-items: stretch;
+  /* perspective: 1500px;  */
+}
+
+.sidebar {
+padding: 20px;
+  min-width: 250px;
+  max-width: 250px;
+  background: rgb(50,53,86);
+  color: #fff;
+  transition: all 0.6s cubic-bezier(0.945, 0.020, 0.270, 0.665);
+  transform-origin: center left; /* Set the transformed position of sidebar to center left side. */
+}
+
+.sidebar.active {
+  margin-left: -250px;
+  transform: rotateY(100deg); /* Rotate sidebar vertically by 100 degrees. */
+}
+@media (max-width: 768px) {
+  /* Reversing the behavior of the sidebar: 
+     it'll be rotated vertically and off canvas by default, 
+     collapsing in on toggle button click with removal of 
+     the vertical rotation.   */
+  .sidebar {
+      margin-left: -250px;
+      transform: rotateY(100deg);
+  }
+  .sidebar.active {
+      margin-left: 0;
+      transform: none;
+  }
+
+  .contentBox.active {
+    overflow: hidden;
+    width: 100vw;
+    display: block;
+    right: -300px;
+  }
+  /* Reversing the behavior of the bars: 
+     Removing the rotation from the first,
+     last bars and reappear the second bar on default state, 
+     and giving them a vertical margin */
+  #sidebarCollapse span:first-of-type,
+  #sidebarCollapse span:nth-of-type(2),
+  #sidebarCollapse span:last-of-type {
+      transform: none;
+      opacity: 1;
+      margin: 5px auto;
+      color:  rgb(69,53,101);
+  }
+
+  /* Removing the vertical margin and make the first and last bars rotate again when the sidebar is open, hiding the second bar */
+  #sidebarCollapse.active span {
+      margin: 0 auto;
+  }
+  #sidebarCollapse.active span:first-of-type {
+      transform: rotate(45deg) translate(2px, 2px);
+  }
+  #sidebarCollapse.active span:nth-of-type(2) {
+      opacity: 0;
+  }
+  #sidebarCollapse.active span:last-of-type {
+      transform: rotate(-45deg) translate(1px, -1px);
+  }
+}
+
+.navbar {
+  padding: 15px 10px;
+  background: #fff;
+  border: none;
+  border-radius: 0;
+  margin-bottom: 40px;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-btn {
+  box-shadow: none;
+  outline: none !important;
+  border: none;
+}
+.text-center {
+  padding: 10px 0;
+}
+#sidebar a {
+  color: #f7f7e8;
+  text-align: center;
+  text-decoration:none;
+}
+
+#sidebar a:hover {
+    color: rgb(148, 142, 160);
+}
+
+.page-item.active .page-link {
+  z-index: 3;
+  color: #fff;
+  background-color: rgb(69,53,101);
+  border-color: rgb(69,53,101);
+}
+
+#sidebar ul{
+    /* position: relative; */
+}
+.sidebarIndex{
+    text-align: center;
+    line-height: 20px;
+    padding: 10px;
+}
+.sidebarIndex.active{
+    /* position: absolute; */
+    /* top:50%;
+    left: 50%; */
+    /* margin-left: -85px; */
+    width: 210px;
+    height: 40px;
+    /* padding: 10px; */
+    background-color: rgb(42,44,67);
+    border-radius: 18px ;
+}
+
+
+/*分頁 a link */
+.page-link {
+    color: rgb(97, 78, 136);
+}
+
+
+.modal {
+  text-align: center;
+  padding: 0!important;
+}
+
+//week5 全域 
+body{
+  font-size: 14px;
+}
+.navbar{
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+.cart-dropdown {
+  bottom: 45px;
+  cursor: pointer;
+  position: fixed;
+  right: 30px;
+  z-index: 100;
+}
+
+.cart-dropdown .cart-icon {
+  background: hsla(0,0%,100%,.8);
+  border: 2px solid #ced4da;
+  border-radius: 100%;
+  height: 60px;
+  width: 60px;
+  text-align: center;
+}
+.cart{
+  position: absolute;
+  right: 15px;
+  top: 18px;
+}
+.cart-icon .totalItems {
+  background: #e67676;
+  border-radius: 10px;
+  color: #fff;
+  font-size: .7rem;
+  padding: 0 6px;
+  position: absolute;
+  right: -5px;
+  top: 0px;
+}
+
+
+.fa-shopping-cart{
+  /* line-height: 20px; */
+  padding-top: 8px;
+  font-size: 20px;
+  color: #6c757d;
+}
+.cart-icon .cart-icon-text {
+  font-size: .78rem;
+  color: #6c757d;
+}
+
+.cart-menu-scroll {
+  border-bottom: 1px solid #dee2e6;
+  margin: 5px 0 15px;
+  max-height: 30vh;
+  overflow-y: auto;
+}
+
+/* cart box */
+.cartMenu {
+  background: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  /* bottom: 90px; */
+  /* display: none; */
+  max-width: 320px;
+  position: fixed;
+  top: 50px;
+  right: 0;
+  z-index: 1000;
+}
+.cartMenu:after {
+  right: 1px;
+  border-width: .5rem 0 .5rem .5rem;
+  border-left-color: #fff;
+}
+
+.cart-img {
+  background-position: 50%;
+  background-size: cover;
+  display: inline-block;
+  height: 35px;
+  width: 35px;
+}
+
+.overlay {
+  background: hsla(0,0%,100%,.65);
+  /* background:rgba(0, 0, 0, 0.65); */
+  bottom: 0;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 68px;
+  z-index: -1;
+}
+
+.cartModalItem{
+  z-index: 1000;
+}
+
+#cartModal{
+  background-color: #fff;
+  font-size: .9rem;
+}
+
+.cartMenu .title{
+  font-size:1rem;
+}
+
+.card-body{
+  background-color: #fff;
+}
+
+.card-header,.card-footer {
+  background-color: #F7F7F7;
+}
+
+  

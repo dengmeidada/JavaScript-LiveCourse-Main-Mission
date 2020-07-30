@@ -6,6 +6,11 @@ import Products from '@/views/Products.vue'
 import Cart from '@/views/Cart.vue'
 import About from '@/views/About.vue'
 import Checkout from '@/views/Checkout.vue'
+import Dashboard from '@/views/Dashboard.vue'
+import ProductManagement from '../views/dashboard/ProductManagement.vue'
+import Coupon from '@/views/dashboard/Coupon.vue'
+import Order from '@/views/dashboard/Order.vue'
+import Images from '@/views/dashboard/Images.vue'
 
 Vue.use(VueRouter)
 
@@ -34,6 +39,28 @@ const routes = [
       {
         path: '/checkout',
         component: Checkout
+      }
+    ]
+  },
+  {
+    path: '/admin',
+    component: Dashboard,
+    children: [
+      {
+        path: '/productManagement',
+        component: ProductManagement
+      },
+      {
+        path: '/coupon',
+        component: Coupon
+      },
+      {
+        path: '/order',
+        component: Order
+      },
+      {
+        path: '/images',
+        component: Images
       }
     ]
   }
