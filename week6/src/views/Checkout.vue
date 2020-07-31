@@ -5,18 +5,18 @@
       <!--訂單頁面 表單驗證 Modal 開始-->
         <div class="my-5 row justify-content-center" >
             <h5 class="title">訂單資訊</h5>
-            <validation-observer v-slot="{ invalid }" class="col-md-6">
-                <form @submit.prevent="createOrder">
+            <validationObserver v-slot="{ invalid }" class="col-md-6">
+                <form @submit.prevent="createOrder" style="text-align:left;font-size:14px;">
                     <div class="form-group">
                         <!--validation-provider input驗證 -->
                         <!--  rules :驗證規則 v-slot: 回傳內容 classes -->
-                        <validation-provider rules = "required" v-slot="{errors,classes}" >
+                        <validationProvider rules = "required" v-slot="{errors,classes}" >
                             <label for="username">收件人姓名</label>
                             <input id="username" class="form-control" v-model="form.name" type="text" :class="classes">
                             <!-- :class="classes" 動態綁定 className。 在all.js中設定成功失敗樣式 -->
                             <!-- 當驗證錯誤時，會跑出錯誤訊息errors[0]text-danger 為 顯示的錯誤顏色-->
                             <span v-if="errors[0]"  class="text-danger">{{errors[0]}}</span>
-                        </validation-provider>
+                        </validationProvider>
                     </div>
                     <div class="form-group">
                         <validation-provider rules = "required|email" v-slot="{errors,classes}" >
@@ -43,30 +43,8 @@
                         <validation-provider rules = "required" v-slot="{errors,classes}" >
                         <label for="payment">付款方式</label>
                             <select id="payment" v-model="form.payment" class="form-control" required :class="classes">
-                                <option value="" disabled>
-                                請選擇付款方式
-                                </option>
-                                <option value="WebATM">
-                                WebATM
-                                </option>
-                                <option value="ATM">
-                                ATM
-                                </option>
-                                <option value="CVS">
-                                CVS
-                                </option>
-                                <option value="Barcode">
-                                Barcode
-                                </option>
-                                <option value="Credit">
-                                Credit
-                                </option>
-                                <option value="ApplePay">
-                                ApplePay
-                                </option>
-                                <option value="GooglePay">
-                                GooglePay
-                                </option>
+                                <option value="" disabled>請選擇付款方式</option>
+                                <option v-for="(item,index) in paymentTxt " :key="index"  :value="item" >{{ item }}</option>
                             </select>
                             <span v-if="errors[0]"  class="text-danger">{{errors[0]}}</span>
                         </validation-provider>
@@ -80,18 +58,23 @@
                         <button type="submit" class="btn btn-primary" :disabled="invalid">送出</button>
                     </div>
                 </form>
-            </validation-observer>
+            </validationObserver>
         </div>
         <!--訂單頁面 表單驗證 Modal 結束-->
+
+        <!-- 訊息 Modal -->
+        <MsgModal ref="msgModal"></MsgModal>
     </div>
 
 </template>
 <script>
 import CartModal from '../components/CartModal'
+import MsgModal from '../components/MsgModal'
 export default {
   name: 'Checkout',
   components: {
-    CartModal
+    CartModal,
+    MsgModal
   },
   props: {
     uuid: String,
@@ -99,7 +82,43 @@ export default {
   },
   data () {
     return {
-      isCheckout: true // 結帳頁面開關
+      isCheckout: true, // 結帳頁面開關
+      form: { // 驗證表單資料
+        name: '',
+        email: '',
+        tel: '',
+        address: '',
+        payment: '',
+        message: ''
+      },
+      paymentTxt: ['WebATM', 'ATM', 'Barcode', 'Credit', 'ApplePay', 'GooglePay']
+    }
+  },
+  methods: {
+    // 建立訂單
+    createOrder () {
+      const apiUrl = `${this.apiPath}/api/${this.uuid}/ec/orders`
+      this.axios({
+        method: 'post',
+        url: apiUrl,
+        data: this.form
+      }).then((res) => {
+        console.log(res)
+        if (res.data.data) {
+          // 跳出提示訊息
+        //   this.$('#orderModal').modal('show')
+          this.$refs.msgModal.orderComplete('orderComplete')
+
+          // 重新渲染購物車
+          this.$parent.reGetCart() // 傳給父元件方法(home.vue)
+        }
+      }).catch((error) => {
+        console.error(error)
+      })
+    },
+    reGetCart () {
+      // 重新渲染購物車
+      this.$parent.reGetCart() // 傳給父元件方法(home.vue)
     }
   }
 }

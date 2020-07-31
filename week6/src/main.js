@@ -23,13 +23,13 @@ import { far } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 // 驗證套件
-import { ValidationObserver, ValidationProvider, extend, localize } from 'vee-validate'
+import { ValidationObserver, ValidationProvider, extend, localize, configure } from 'vee-validate'
 import * as rules from 'vee-validate/dist/rules'
 import TW from 'vee-validate/dist/locale/zh_TW.json'
 // 註冊語言vee-validate繁體中文
 
 // Add a rule，此範例中添加了一個名為'secret'的規則，若 value 值不為 'example'，就會回饋 message 裡的文字。
-import { required, email, alpha, length, max } from 'vee-validate/dist/rules'
+import { required } from 'vee-validate/dist/rules'
 
 Vue.use(BootstrapVue)
 Vue.use(BootstrapVueIcons)
@@ -48,18 +48,17 @@ Vue.component('ValidationProvider', ValidationProvider)// 註冊ValidationProvid
 // 註冊語言vee-validate繁體中文
 localize('zh_TW', TW)
 
-// 規定email格式vee-validate
-extend('email', email)
-extend('alpha', alpha)
-extend('length', length)
-extend('max', max)
+// class 設定檔案(錯誤class名稱)
+configure({
+  classes: {
+    valid: 'is-valid', // 驗證成功
+    invalid: 'is-invalid' // 驗證失敗
+  }
+})
+
 extend('required', { // 這邊可以改寫我們，告知使用者是必填欄位的提示文字
   ...required,
   message: '此欄位為必填欄位'
-})
-extend(' alpha_num', {
-  ...alpha,
-  message: '此欄位請填英、數字'
 })
 
 Vue.config.productionTip = false

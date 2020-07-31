@@ -7,7 +7,7 @@
             <!-- 購物車icon 始-->
             <div class="cart pr-1"  @click="openNavbarChartModal">
               <div class="cart-icon">
-                  <span class="totalItems">{{ homeCart.length }}</span>
+                  <span class="totalItems">{{this.$store.state.cartDetail.length}}</span>
                   <font-awesome-icon :icon="['fa','shopping-cart']" />
               </div>
             </div>
@@ -33,6 +33,7 @@
 <script>
 // import Navbar from '@/components/Navbar.vue'
 import CartModal from '../components/CartModal'
+// import { }
 export default {
   name: 'Home',
   components: {
@@ -47,10 +48,14 @@ export default {
       isCart: false // 購物車視窗開關
     }
   },
+  created () {
+    // console.log('121212' + this.$store.state.cartDetail)
+  },
   methods: {
     updatedHomeCarts (data) {
       console.log(data)
       this.homeCart = data
+      // this.$store.commit('reCartDetail', data)
     },
     openNavbarChartModal () {
       if (!this.isCart) {

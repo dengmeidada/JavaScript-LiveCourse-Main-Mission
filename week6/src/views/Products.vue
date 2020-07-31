@@ -2,10 +2,6 @@
     <div class="products">
         前台產品列表
         <div class="container">
-          <!-- 購物車 Modal 顯現 -->
-          <!-- <CartModal ref="cartModal" :uuid="uuid" :api-path="apiPath" :is-cart.sync="isCart" v-on:carts="updatedCarts"></CartModal> -->
-          <!-- v-on:carts 由此接收子元件carts資料，觸發updatedCarts方法 接收資料 -->
-
             <div class="header">
               <h5 class="title text-center">所有產品</h5>
             </div>
@@ -35,11 +31,13 @@
         </div>
         <!-- 產品詳情 Modal 顯現 (查看更多)-->
         <ProductModal ref="productModal" :uuid="uuid" :api-path="apiPath"></ProductModal>
+        <!-- 訊息視窗 -->
+        <MsgModal ref="msgModal"></MsgModal>
     </div>
 </template>
 <script>
 import ProductModal from '../components/ProductModal'
-// import CartModal from '../components/CartModal'
+import MsgModal from '../components/MsgModal'
 export default {
   name: 'Products',
   props: {
@@ -47,8 +45,8 @@ export default {
     apiPath: String
   },
   components: {
-    ProductModal
-    // CartModal
+    ProductModal,
+    MsgModal
   },
   data () {
     return {
@@ -62,8 +60,6 @@ export default {
         payment: '',
         message: ''
       },
-      // uuid: '7f7cf697-969f-4e45-83f9-01ea57ba8ea3',
-      // apiPath: 'https://course-ec-api.hexschool.io',
       carts: {}, // 購物車資料
       cartTotal: 0,
       isCart: false, // 購物車視窗開關
@@ -114,6 +110,7 @@ export default {
         this.isErrorMsg = false
         this.$refs.productModal.closeProductCart()
         // $('#orderModal').modal('show')
+        this.$refs.msgModal.orderComplete('addToCartComplete') // 開啟提示視窗
 
         // 重新渲染購物車
         this.$parent.reGetCart() // 先傳回父元件的方法，來渲染購物車
@@ -122,6 +119,7 @@ export default {
         this.errorMsg = error.response.data.errors[0]
         this.isErrorMsg = true
         this.$refs.productModal.closeProductCart()
+        this.$refs.msgModal.orderComplete('AlreadyAddToCart', this.errorMsg) // 開啟提示視窗
         // $('#orderModal').modal('show')
       })
     },
