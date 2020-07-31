@@ -86,7 +86,7 @@
         <!-- 購物車 始 -->
         <!-- {{ isCart }} -->
             <div v-if="isCart" :class="{ cartMenu:isCart }" ref="cart-menu">
-                <!-- <div class="overlay" @click="closeCart"></div> -->
+                <div class="overlay" @click="closeCart"></div>
                 <div  class="dialog-centered cartModalItem" role="document">
                     <div class="content">
                         <div class="card-header p-3">

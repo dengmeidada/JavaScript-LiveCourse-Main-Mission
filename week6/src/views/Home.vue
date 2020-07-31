@@ -12,7 +12,7 @@
               </div>
             </div>
             <!-- 購物車icon 末-->
-            <CartModal ref="cartModal" :uuid="uuid" :api-path="apiPath" :isCart.sync="isCart" v-on:carts="updatedHomeCarts"></CartModal>
+
           </div>
 
         <b-collapse id="nav-collapse" is-nav>
@@ -27,6 +27,8 @@
         </b-collapse>
       </b-navbar>
       <router-view :uuid="uuid" :api-path="apiPath" v-on:homeCart="updatedHomeCarts"></router-view>
+      <!-- 購物車 Modal -->
+      <CartModal ref="cartModal" :uuid="uuid" :api-path="apiPath" :isCart.sync="isCart" v-on:carts="updatedHomeCarts"></CartModal>
   </div>
 </template>
 
