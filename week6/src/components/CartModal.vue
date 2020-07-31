@@ -172,11 +172,7 @@ export default {
   created () {
     // 在進入網頁時，事先取得購物資料
     this.getCart()
-    // return this.get_reCartDetail// 使用vuex get 取得
   },
-  // computed: {
-  //   ...mapGetters(['get_reCartDetail']) // 使用vuex get 取得
-  // },
   methods: {
     // 取得購物資訊
     getCart () {
