@@ -31,6 +31,11 @@ import TW from 'vee-validate/dist/locale/zh_TW.json'
 // Add a rule，此範例中添加了一個名為'secret'的規則，若 value 值不為 'example'，就會回饋 message 裡的文字。
 import { required } from 'vee-validate/dist/rules'
 
+// 引入loading
+import Loading from 'vue-loading-overlay'
+import 'vue-loading-overlay/dist/vue-loading.css'
+
+Vue.component('Loading', Loading)
 Vue.use(BootstrapVue)
 Vue.use(BootstrapVueIcons)
 Vue.use(VueAxios, axios)

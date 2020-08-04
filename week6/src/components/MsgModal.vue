@@ -4,10 +4,6 @@
             <div class="d-block text-center">
                 <h6>{{ msgTxt }}</h6>
             </div>
-
-                <!-- <b-button class="mt-3 float-right" variant="btn btn-secondary" block @click="hideModal">關閉</b-button>
-                <b-button class="mt-2 float-right" variant="btn btn-primary" block @click="goProducts">繼續購物</b-button> -->
-
             <template v-slot:modal-footer="{ ok, cancel }">
                 <b-button size="sm" variant="secondary" @click="cancel()">關閉</b-button>
                 <b-button v-if="isGoProducts" size="sm" variant="primary" @click="goProducts()">繼續購物</b-button>
@@ -26,9 +22,9 @@ export default {
     }
   },
   methods: {
-    // 結帳完成訊息
+    // 結帳/加入購物車完成訊息
     orderComplete (type, msg) {
-      console.log(type)
+      // console.log(type)
       this.$refs['msg-modal'].show()
       switch (type) {
         case 'orderComplete':

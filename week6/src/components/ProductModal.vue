@@ -32,16 +32,14 @@
                     <button type="button" class="btn btn-primary btn-sm ml-auto" @click="productDetailAddToCart(tempProduct)">加入購物車</button>
             </div>
         </b-modal>
+        <!-- loading 套件 始 (放入子元件中) -->
+          <loading :active.sync="isLoading"></loading>
+        <!-- loading 套件 末 -->
     </div>
 </template>
 <script>
 export default {
   name: 'ProductModal',
-  props: {
-    productId: String,
-    uuid: String,
-    apiPath: String
-  },
   data () {
     return {
       tempProduct: {
@@ -51,23 +49,26 @@ export default {
     }
   },
   methods: {
+    // 千分位方法(因為productModal藉由click抓取id後才載入對應產品，無法使用filter方法，因此使用其法轉換 註:用filter方法無法出取其值，會出現undefined)
+    priceFormat: function (value) {
+      const intPart = value.toString() // 轉字串
+      const intPartFormat = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+      return 'NT$ ' + intPartFormat
+    },
     // 取得單一產品細節資料(查看更多)
     getDetail (id) { // 取得點擊產品id
-      console.log(id)
-      const apiUrl = `${this.apiPath}/api/${this.uuid}/ec/product/${id}`
+      const apiUrl = `${process.env.VUE_APP_APIPATH}api/${process.env.VUE_APP_UUID}/ec/product/${id}`
       this.axios({
         method: 'get',
         url: apiUrl
       }).then((res) => {
-        console.log(res.data.data)
+      // console.log(res.data.data)
         this.tempProduct = res.data.data
         this.$set(this.tempProduct, 'num', 0)
 
         // 使其值轉為千分為表示
-        // this.tempProduct.price = this.priceFormat(this.tempProduct.price)
-        // this.tempProduct.origin_price = this.priceFormat(this.tempProduct.origin_price)
-
-        // this.$('#productModal').modal('show')
+        this.tempProduct.price = this.priceFormat(this.tempProduct.price)
+        this.tempProduct.origin_price = this.priceFormat(this.tempProduct.origin_price)
         this.$refs['product-modal'].show()
       }).catch((error) => {
         console.error(error)
@@ -81,6 +82,7 @@ export default {
     closeProductCart () {
       this.$refs['product-modal'].hide()
     }
+
   }
 }
 </script>

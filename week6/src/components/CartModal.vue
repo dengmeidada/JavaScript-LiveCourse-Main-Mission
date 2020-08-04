@@ -141,22 +141,25 @@
                 </div>
             </div>
         </div>
-        <div class="test">
-
-        </div>
+        <!-- loading 套件 始 (放入子元件中) -->
+        <loading :active.sync="isLoading"></loading>
+        <!-- loading 套件 末 -->
+        <!-- 訊息視窗 -->
+        <MsgModal ref="msgModal"></MsgModal>
     </div>
 </template>
 <script>
 // import { mapGetters } from 'vuex' // 使用vuex
+import MsgModal from '../components/MsgModal'
 export default {
   name: 'CartModal',
   props: {
-    productId: String,
-    uuid: String,
-    apiPath: String,
     isCart: Boolean,
     isCheckout: Boolean, // 結帳頁面開關
     disabled: Boolean
+  },
+  components: {
+    MsgModal
   },
   data () {
     return {
@@ -175,10 +178,10 @@ export default {
   },
   methods: {
     // 取得購物資訊
-    getCart () {
+    getCart (success) {
+      // console.log(success)
       this.isLoading = true
-      console.log('這??')
-      const apiUrl = `${this.apiPath}/api/${this.uuid}/ec/shopping`
+      const apiUrl = `${process.env.VUE_APP_APIPATH}api/${process.env.VUE_APP_UUID}/ec/shopping`
 
       this.axios({
         method: 'get',
@@ -186,7 +189,6 @@ export default {
       }).then((res) => {
         this.cart = res.data.data
         // console.log(this.cart.length);
-        console.log('這裡是取購物資料')
 
         // 累加總金額
         this.cartTotal = 0
@@ -198,10 +200,19 @@ export default {
         this.$store.commit('reCartDetail', this.cart) // 購物車產品資料
         this.$store.commit('upCartTotal', this.cartTotal) // 產品總資料
 
-        // this.$emit('carts', this.cart) // 把資料傳給父元件
-        // 重新渲染購物車
         this.isLoading = false
-        console.log('還是這??')
+
+        // 開啟提示視窗
+        switch (success) {
+          case 'addCaertSuccess':
+            this.$refs.msgModal.orderComplete('addToCartComplete') // 成功加入購物車
+            break
+          case 'orderSuccess':
+            this.$refs.msgModal.orderComplete('orderComplete') // 完成訂單
+            break
+          default:
+            break
+        }
       }).catch((error) => {
         console.error(error)
       })
@@ -219,7 +230,7 @@ export default {
           }
           break
       }
-      const apiUrl = `${this.apiPath}/api/${this.uuid}/ec/shopping`
+      const apiUrl = `${process.env.VUE_APP_APIPATH}api/${process.env.VUE_APP_UUID}/ec/shopping`
 
       const data = {
         product: id,
@@ -232,7 +243,6 @@ export default {
       }).then((res) => {
         this.isLoading = false
         this.getCart()
-        // this.$parent.reGetCart() // 傳給父元件方法(Checkout.vue)
       }).catch((error) => {
         console.error(error)
       })
@@ -240,7 +250,7 @@ export default {
     // 移除購物車產品
     removeCartItem (id) {
       this.isLoading = true
-      const apiUrl = `${this.apiPath}/api/${this.uuid}/ec/shopping/${id}`
+      const apiUrl = `${process.env.VUE_APP_APIPATH}api/${process.env.VUE_APP_UUID}/ec/shopping/${id}`
 
       this.axios({
         method: 'delete',
@@ -248,7 +258,6 @@ export default {
       }).then((res) => {
         this.isLoading = false
         this.getCart()
-        // this.$parent.reGetCart() // 傳給父元件方法(Checkout.vue)
       }).catch((error) => {
         console.error(error)
       })
@@ -256,14 +265,13 @@ export default {
     // 移除所有購物車產品
     removeAllCartItem () {
       this.isLoading = true
-      const apiUrl = `${this.apiPath}/api/${this.uuid}/ec/shopping/all/product`
+      const apiUrl = `${process.env.VUE_APP_APIPATH}api/${process.env.VUE_APP_UUID}/ec/shopping/all/product`
       this.axios({
         method: 'delete',
         url: apiUrl
       }).then((res) => {
         this.isLoading = false
         this.getCart()
-        // this.$parent.reGetCart() // 傳給父元件方法(Checkout.vue)
       }).catch((error) => {
         console.error(error)
       })

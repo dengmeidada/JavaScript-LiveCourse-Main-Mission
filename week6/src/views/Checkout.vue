@@ -1,7 +1,7 @@
 <template>
     <div class="checkout container">
         結帳
-        <CartModal :uuid="uuid" :api-path="apiPath" :isCheckout="isCheckout"></CartModal>
+        <CartModal ref="cartModal" :isCheckout="isCheckout"></CartModal>
       <!--訂單頁面 表單驗證 Modal 開始-->
         <div class="my-5 row justify-content-center" >
             <h5 class="title">訂單資訊</h5>
@@ -77,8 +77,8 @@ export default {
     MsgModal
   },
   props: {
-    uuid: String,
-    apiPath: String
+    // uuid: String,
+    // apiPath: String
   },
   data () {
     return {
@@ -97,28 +97,22 @@ export default {
   methods: {
     // 建立訂單
     createOrder () {
-      const apiUrl = `${this.apiPath}/api/${this.uuid}/ec/orders`
+      const apiUrl = `${process.env.VUE_APP_APIPATH}api/${process.env.VUE_APP_UUID}/ec/orders`
       this.axios({
         method: 'post',
         url: apiUrl,
         data: this.form
       }).then((res) => {
-        console.log(res)
+        // console.log(res)
         if (res.data.data) {
           // 跳出提示訊息
-        //   this.$('#orderModal').modal('show')
-          this.$refs.msgModal.orderComplete('orderComplete')
-
+          const orderMsg = 'orderSuccess'
           // 重新渲染購物車
-          this.$parent.reGetCart() // 傳給父元件方法(home.vue)
+          this.$refs.cartModal.getCart(orderMsg)
         }
       }).catch((error) => {
         console.error(error)
       })
-    },
-    reGetCart () {
-      // 重新渲染購物車
-      this.$parent.reGetCart() // 傳給父元件方法(home.vue)
     }
   }
 }

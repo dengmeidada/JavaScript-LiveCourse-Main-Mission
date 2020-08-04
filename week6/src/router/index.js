@@ -7,6 +7,7 @@ import Cart from '@/views/Cart.vue'
 import About from '@/views/About.vue'
 import Checkout from '@/views/Checkout.vue'
 import Dashboard from '@/views/Dashboard.vue'
+import Login from '../views/dashboard/Login'
 import ProductManagement from '../views/dashboard/ProductManagement.vue'
 import Coupon from '@/views/dashboard/Coupon.vue'
 import Order from '@/views/dashboard/Order.vue'
@@ -43,23 +44,27 @@ const routes = [
     ]
   },
   {
+    path: '/login',
+    component: Login
+  },
+  {
     path: '/admin',
     component: Dashboard,
     children: [
       {
-        path: '/productManagement',
+        path: 'productManagement',
         component: ProductManagement
       },
       {
-        path: '/coupon',
+        path: 'coupon',
         component: Coupon
       },
       {
-        path: '/order',
+        path: 'order',
         component: Order
       },
       {
-        path: '/images',
+        path: 'images',
         component: Images
       }
     ]
